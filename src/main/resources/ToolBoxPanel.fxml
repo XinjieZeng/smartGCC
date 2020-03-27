@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.text.Text?>
+<AnchorPane prefHeight="300.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.view.ToolBoxPanelController">
+
+    <children>
+
+      <TabPane prefHeight="400.0" prefWidth="550.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <tabs>
+
+            <Tab text="Compile">
+                <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                        <GridPane prefHeight="200" prefWidth="320"
+                                  alignment="center" hgap="10" vgap="10">
+
+                            <Text text="Compile Options"
+                                  GridPane.columnIndex="0" GridPane.rowIndex="0"
+                                  GridPane.columnSpan="2"/>
+
+                            <RadioButton mnemonicParsing="false" text="option 1" selected="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                <toggleGroup>
+                                    <ToggleGroup fx:id="compiling"/>
+                                </toggleGroup>
+                            </RadioButton>
+
+                            <RadioButton toggleGroup="$compiling" mnemonicParsing="false" text="option 2" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        </GridPane>
+                    </AnchorPane>
+                </content>
+            </Tab>
+
+            <Tab text="Linking">
+                <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" >
+                        <GridPane prefHeight="200" prefWidth="320"
+                                  alignment="center" hgap="10" vgap="10">
+
+                            <Text text="Linking Options"
+                                  GridPane.columnIndex="0" GridPane.rowIndex="0"
+                                  GridPane.columnSpan="2"/>
+
+                            <RadioButton mnemonicParsing="false" text="option 1" selected="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                <toggleGroup>
+                                    <ToggleGroup fx:id="linking"/>
+                                </toggleGroup>
+                            </RadioButton>
+
+                            <RadioButton toggleGroup="$linking" mnemonicParsing="false" text="option 2" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        </GridPane>
+                    </AnchorPane>
+                </content>
+            </Tab>
+
+            <Tab text="Execute">
+                <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" >
+                        <GridPane prefHeight="200" prefWidth="320"
+                                  alignment="center" hgap="10" vgap="10">
+
+                            <Text text="Execute Options"
+                                  GridPane.columnIndex="0" GridPane.rowIndex="0"
+                                  GridPane.columnSpan="2"/>
+
+                            <RadioButton mnemonicParsing="false" text="option 1" selected="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                <toggleGroup>
+                                    <ToggleGroup fx:id="executing"/>
+                                </toggleGroup>
+                            </RadioButton>
+
+                            <RadioButton toggleGroup="$executing" mnemonicParsing="false" text="option 2" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        </GridPane>
+                    </AnchorPane>
+                </content>
+            </Tab>
+
+            <Tab text="Debug">
+                <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" >
+                        <GridPane prefHeight="200" prefWidth="320"
+                                  alignment="center" hgap="10" vgap="10">
+
+                            <Text text="Debugging Options"
+                                  GridPane.columnIndex="0" GridPane.rowIndex="0"
+                                  GridPane.columnSpan="2"/>
+
+                            <RadioButton mnemonicParsing="false" text="option 1" selected="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                <toggleGroup>
+                                    <ToggleGroup fx:id="debugging"/>
+                                </toggleGroup>
+                            </RadioButton>
+
+                            <RadioButton toggleGroup="$debugging" mnemonicParsing="false" text="option 2" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        </GridPane>
+                    </AnchorPane>
+                </content>
+            </Tab>
+
+            <Tab text="Code Generation">
+                <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" >
+                        <GridPane prefHeight="200" prefWidth="320"
+                                  alignment="center" hgap="10" vgap="10">
+
+                            <Text text="Code Generation Options"
+                                  GridPane.columnIndex="0" GridPane.rowIndex="0"
+                                  GridPane.columnSpan="2"/>
+
+                            <RadioButton mnemonicParsing="false" text="option 1" selected="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                <toggleGroup>
+                                    <ToggleGroup fx:id="generating"/>
+                                </toggleGroup>
+                            </RadioButton>
+
+                            <RadioButton toggleGroup="$generating" mnemonicParsing="false" text="option 2" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        </GridPane>
+                    </AnchorPane>
+                </content>
+            </Tab>
+
+            <Tab text="Code Optimization">
+                <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" >
+                        <GridPane prefHeight="200" prefWidth="320"
+                                  alignment="center" hgap="10" vgap="10">
+
+                            <Text text="Code Optimization Options"
+                                  GridPane.columnIndex="0" GridPane.rowIndex="0"
+                                  GridPane.columnSpan="2"/>
+
+                            <RadioButton mnemonicParsing="false" text="option 1" selected="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                <toggleGroup>
+                                    <ToggleGroup fx:id="optimizing"/>
+                                </toggleGroup>
+                            </RadioButton>
+
+                            <RadioButton toggleGroup="$optimizing" mnemonicParsing="false" text="option 2" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        </GridPane>
+                    </AnchorPane>
+                </content>
+            </Tab>
+
+            <Tab text="Developer">
+                <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" >
+                        <GridPane prefHeight="200" prefWidth="320"
+                                  alignment="center" hgap="10" vgap="10">
+
+                            <Text text="Developer Options"
+                                  GridPane.columnIndex="0" GridPane.rowIndex="0"
+                                  GridPane.columnSpan="2"/>
+
+                            <RadioButton mnemonicParsing="false" text="Option 1" selected="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                <toggleGroup>
+                                    <ToggleGroup fx:id="developer"/>
+                                </toggleGroup>
+                            </RadioButton>
+
+                            <RadioButton toggleGroup="$developer" mnemonicParsing="false" text="Option 2" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        </GridPane>
+                    </AnchorPane>
+                </content>
+            </Tab>
+
+        </tabs>
+      </TabPane>
+    </children>
+    <opaqueInsets>
+        <Insets />
+    </opaqueInsets>
+
+</AnchorPane>

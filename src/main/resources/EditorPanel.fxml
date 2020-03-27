@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioMenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.input.KeyCodeCombination?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.view.EditorPanelController">
+
+
+    <MenuBar nodeOrientation="LEFT_TO_RIGHT" prefHeight="600.0" prefWidth="400.0" stylesheets="view.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" BorderPane.alignment="CENTER">
+        <menus>
+
+            <Menu mnemonicParsing="false" text="File">
+                <items>
+                    <MenuItem mnemonicParsing="false" onAction="#handleOpen" text="Open File">
+                        <accelerator>
+                            <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                        </accelerator>
+                    </MenuItem>
+
+                    <MenuItem mnemonicParsing="false" onAction="#handleOpen" text="Open Directory">
+                        <accelerator>
+                            <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                        </accelerator>
+                    </MenuItem>
+
+                    <MenuItem mnemonicParsing="false" text="Save">
+                        <accelerator>
+                            <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                        </accelerator>
+                    </MenuItem>
+                    <MenuItem mnemonicParsing="false" text="Save As..." />
+                    <MenuItem mnemonicParsing="false" text="Exit" />
+                </items>
+            </Menu>
+
+
+            <Menu mnemonicParsing="false" text="Options">
+                <items>
+               <Menu mnemonicParsing="false" text="Compile Options">
+                 <items>
+                   <MenuItem mnemonicParsing="false" onAction="#compileCPlusFile" text="Compile C++ file" />
+                 </items>
+               </Menu>
+                    <MenuItem mnemonicParsing="false" text="Linking Options">
+                        <accelerator>
+                            <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                        </accelerator>
+                    </MenuItem>
+                    <MenuItem mnemonicParsing="false" text="Execute Options">
+                        <accelerator>
+                            <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                        </accelerator>
+                    </MenuItem>
+
+                    <MenuItem mnemonicParsing="false" text="Debug Options">
+                        <accelerator>
+                            <KeyCodeCombination alt="UP" code="M" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                        </accelerator>
+                    </MenuItem>
+               <SeparatorMenuItem mnemonicParsing="false" />
+
+                    <MenuItem fx:id="codeGeneration" mnemonicParsing="false" text="Code Generation Options">
+                        <accelerator>
+                            <KeyCodeCombination alt="UP" code="A" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                        </accelerator>
+                    </MenuItem>
+
+                    <MenuItem fx:id="codeOptimization" mnemonicParsing="false" text="Code Optimization Options">
+                        <accelerator>
+                            <KeyCodeCombination alt="UP" code="B" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                        </accelerator>
+                    </MenuItem>
+               <SeparatorMenuItem mnemonicParsing="false" />
+
+                    <MenuItem fx:id="codeDevelopment" mnemonicParsing="false" text="Developer Options">
+                        <accelerator>
+                            <KeyCodeCombination alt="UP" code="C" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                        </accelerator>
+                    </MenuItem>
+                </items>
+            </Menu>
+
+
+            <Menu id="run" fx:id="run" mnemonicParsing="false" text="Run">
+            </Menu>
+            <Menu mnemonicParsing="false" text="Stop" />
+            <Menu mnemonicParsing="false" text="History">
+            <items>
+               <RadioMenuItem mnemonicParsing="false" text="Unspecified Action" />
+            </items></Menu>
+            <Menu mnemonicParsing="false" onAction="#selectUserType" text="Users">
+                <items>
+                    <MenuItem mnemonicParsing="false" text="Change Users Type" />
+                </items>
+            </Menu>
+            <Menu mnemonicParsing="false" onAction="#showToolBoxDialogue" text="ToolBox">
+            <items>
+               <MenuItem fx:id="toolBox" mnemonicParsing="false" text="All available options" />
+            </items></Menu>
+            <Menu id="help" mnemonicParsing="false" text="Help" />
+        </menus>
+    </MenuBar>
+
+    <SplitPane dividerPositions="0.6666666666666666" layoutX="153.0" layoutY="29.0" orientation="VERTICAL" prefHeight="371.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="29.0">
+        <items>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="background">
+                <children>
+                    <Label layoutX="39.0" layoutY="39.0" styleClass="label-header" text="File Names" AnchorPane.leftAnchor="39.0" AnchorPane.topAnchor="39.0" />
+               <ListView fx:id="fileListView" accessibleRole="CHECK_BOX" layoutX="39.0" layoutY="73.0" prefHeight="200.0" prefWidth="700.0">
+               </ListView>
+
+                </children>
+            </AnchorPane>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="background">
+                <children>
+                    <Label layoutX="26.0" layoutY="6.0" styleClass="label-header" text="Output" AnchorPane.leftAnchor="26.0" AnchorPane.topAnchor="6.0" />
+               <ImageView fitHeight="17.0" fitWidth="23.0" layoutX="5.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@run.png" />
+                  </image>
+               </ImageView>
+
+               <AnchorPane fx:id="outputWindow" layoutX="5.0" layoutY="28.0" prefHeight="151.0" prefWidth="728.0">
+                    <Text fx:id="output"> </Text>
+               </AnchorPane>
+                </children>
+            </AnchorPane>
+        </items>
+    </SplitPane>
+</AnchorPane>

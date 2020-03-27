@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Text?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="sample.view.UserSwitchDialogueController"
+            prefHeight="300.0" prefWidth="400.0">
+
+    <GridPane prefHeight="200" prefWidth="320"
+              alignment="center" hgap="10" vgap="10">
+
+        <Text text="How would you describe your proficiency level?"
+              GridPane.columnIndex="0" GridPane.rowIndex="0"
+              GridPane.columnSpan="2"/>
+
+        <RadioButton mnemonicParsing="false" text="novice" selected="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <toggleGroup>
+                <ToggleGroup fx:id="toggleGroup"/>
+            </toggleGroup>
+        </RadioButton>
+
+        <RadioButton toggleGroup="$toggleGroup" mnemonicParsing="false" text="typical" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <RadioButton toggleGroup="$toggleGroup" mnemonicParsing="false" text="expert" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+    </GridPane>
+
+    <ButtonBar layoutX="176.0" layoutY="233.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0">
+        <buttons>
+            <Button mnemonicParsing="false"  prefWidth="120.0" text="Cancel" onAction="#handleCancel"/>
+            <Button defaultButton="true" mnemonicParsing="false" text="OK" onAction="#handleOK"/>
+        </buttons>
+    </ButtonBar>
+
+
+
+</AnchorPane>
