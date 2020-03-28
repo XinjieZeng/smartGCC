@@ -6,6 +6,7 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.RadioMenuItem?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.image.Image?>
@@ -29,46 +30,48 @@
                         </accelerator>
                     </MenuItem>
 
-                    <MenuItem mnemonicParsing="false" onAction="#handleOpen" text="Open Directory">
+                    <MenuItem mnemonicParsing="false" onAction="#handleOpenDirectory" text="Open Directory">
                         <accelerator>
                             <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                         </accelerator>
                     </MenuItem>
-
-                    <MenuItem mnemonicParsing="false" text="Save">
-                        <accelerator>
-                            <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                        </accelerator>
-                    </MenuItem>
-                    <MenuItem mnemonicParsing="false" text="Save As..." />
-                    <MenuItem mnemonicParsing="false" text="Exit" />
+                    <MenuItem mnemonicParsing="false" onAction="#handleExit" text="Exit" />
                 </items>
             </Menu>
 
 
-            <Menu mnemonicParsing="false" text="Options">
+            <Menu mnemonicParsing="false" text="Commands">
                 <items>
-               <Menu mnemonicParsing="false" text="Compile Options">
+               <Menu mnemonicParsing="false" text="Compile">
                  <items>
                    <MenuItem mnemonicParsing="false" onAction="#compileCPlusFile" text="Compile C++ file" />
+                     <MenuItem mnemonicParsing="false" onAction="#compileCFile" text="Compile C file" />
                  </items>
                </Menu>
-                    <MenuItem mnemonicParsing="false" text="Linking Options">
-                        <accelerator>
-                            <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                        </accelerator>
-                    </MenuItem>
-                    <MenuItem mnemonicParsing="false" text="Execute Options">
-                        <accelerator>
-                            <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                        </accelerator>
-                    </MenuItem>
-
-                    <MenuItem mnemonicParsing="false" text="Debug Options">
-                        <accelerator>
-                            <KeyCodeCombination alt="UP" code="M" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                        </accelerator>
-                    </MenuItem>
+               <Menu mnemonicParsing="false" text="Linking">
+                 <items>
+                     <MenuItem mnemonicParsing="false" onAction="#compileCPlusFile" text="Linking C++ files">
+                         <accelerator>
+                             <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                         </accelerator>
+                     </MenuItem>
+                 </items>
+               </Menu>
+               <Menu mnemonicParsing="false" text="Debugging">
+                 <items>
+                          <MenuItem mnemonicParsing="false" text="C++ Debug(default)" onAction="#cPlusDebug">
+                              <accelerator>
+                                  <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                              </accelerator>
+                          </MenuItem>
+      
+                          <MenuItem mnemonicParsing="false" text="C Debug(Default)" onAction="#cDebug">
+                              <accelerator>
+                                  <KeyCodeCombination alt="UP" code="M" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                              </accelerator>
+                          </MenuItem>
+                 </items>
+               </Menu>
                <SeparatorMenuItem mnemonicParsing="false" />
 
                     <MenuItem fx:id="codeGeneration" mnemonicParsing="false" text="Code Generation Options">
@@ -96,10 +99,13 @@
             <Menu id="run" fx:id="run" mnemonicParsing="false" text="Run">
             </Menu>
             <Menu mnemonicParsing="false" text="Stop" />
-            <Menu mnemonicParsing="false" text="History">
-            <items>
-               <RadioMenuItem mnemonicParsing="false" text="Unspecified Action" />
-            </items></Menu>
+
+            <Menu fx:id="commandHistory" mnemonicParsing="false" text="History">
+                <items>
+                    <RadioMenuItem fx:id="emptyCommandHistory" disable="true" mnemonicParsing="false" text="empty" />
+                </items>
+            </Menu>
+
             <Menu mnemonicParsing="false" onAction="#selectUserType" text="Users">
                 <items>
                     <MenuItem mnemonicParsing="false" text="Change Users Type" />
@@ -117,7 +123,7 @@
         <items>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="background">
                 <children>
-                    <Label layoutX="39.0" layoutY="39.0" styleClass="label-header" text="File Names" AnchorPane.leftAnchor="39.0" AnchorPane.topAnchor="39.0" />
+                    <Label layoutX="39.0" layoutY="39.0" styleClass="label-header" text="File Lists" AnchorPane.leftAnchor="39.0" AnchorPane.topAnchor="39.0" />
                <ListView fx:id="fileListView" accessibleRole="CHECK_BOX" layoutX="39.0" layoutY="73.0" prefHeight="200.0" prefWidth="700.0">
                </ListView>
 
@@ -132,8 +138,12 @@
                   </image>
                </ImageView>
 
-               <AnchorPane fx:id="outputWindow" layoutX="5.0" layoutY="28.0" prefHeight="151.0" prefWidth="728.0">
-                    <Text fx:id="output"> </Text>
+               <AnchorPane fx:id="outputWindow" layoutX="6.0" layoutY="28.0" prefHeight="151.0" prefWidth="782.0">
+                  <ScrollPane prefHeight="200.0" prefWidth="782.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <content>
+                         <Text fx:id="output" wrappingWidth="479.0" />
+                     </content>
+                  </ScrollPane>
                </AnchorPane>
                 </children>
             </AnchorPane>
