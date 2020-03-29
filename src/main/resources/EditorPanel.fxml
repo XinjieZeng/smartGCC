@@ -9,6 +9,7 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.input.KeyCodeCombination?>
@@ -16,7 +17,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.view.EditorPanelController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.172-ea" fx:controller="sample.view.EditorPanelController">
 
 
     <MenuBar nodeOrientation="LEFT_TO_RIGHT" prefHeight="600.0" prefWidth="400.0" stylesheets="view.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" BorderPane.alignment="CENTER">
@@ -35,6 +36,14 @@
                             <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                         </accelerator>
                     </MenuItem>
+
+                    <MenuItem mnemonicParsing="false" text="Save">
+                        <accelerator>
+                            <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                        </accelerator>
+                    </MenuItem>
+
+                    <MenuItem mnemonicParsing="false" text="Save As..." />
                     <MenuItem mnemonicParsing="false" onAction="#handleExit" text="Exit" />
                 </items>
             </Menu>
@@ -44,28 +53,25 @@
                 <items>
                <Menu mnemonicParsing="false" text="Compile">
                  <items>
-                   <MenuItem mnemonicParsing="false" onAction="#compileCPlusFile" text="Compile C++ file" />
-                     <MenuItem mnemonicParsing="false" onAction="#compileCFile" text="Compile C file" />
+                   <MenuItem mnemonicParsing="false" onAction="#compileToExecutableFile" text="Compile to Executable File" />
+                     <MenuItem mnemonicParsing="false" onAction="#compileCFile" text="Compile to Object File" />
                  </items>
                </Menu>
                <Menu mnemonicParsing="false" text="Linking">
                  <items>
-                     <MenuItem mnemonicParsing="false" onAction="#compileCPlusFile" text="Linking C++ files">
-                         <accelerator>
-                             <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                         </accelerator>
-                     </MenuItem>
+                     <MenuItem mnemonicParsing="false" onAction="#linkCFile" text="Link -share" />
                  </items>
                </Menu>
+
                <Menu mnemonicParsing="false" text="Debugging">
                  <items>
-                          <MenuItem mnemonicParsing="false" text="C++ Debug(default)" onAction="#cPlusDebug">
+                          <MenuItem mnemonicParsing="false" onAction="#produceNativeDubuggingInfo" text="Debug -g">
                               <accelerator>
                                   <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                               </accelerator>
                           </MenuItem>
       
-                          <MenuItem mnemonicParsing="false" text="C Debug(Default)" onAction="#cDebug">
+                          <MenuItem mnemonicParsing="false" onAction="#produceDwarfDebuffingInfo" text="Debug -ggdb">
                               <accelerator>
                                   <KeyCodeCombination alt="UP" code="M" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                               </accelerator>
@@ -73,25 +79,39 @@
                  </items>
                </Menu>
                <SeparatorMenuItem mnemonicParsing="false" />
+               <Menu mnemonicParsing="false" text="Code Optimization" fx:id="codeOptimization">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Level 1 Optimization" onAction="#optimizeLevelOne"/>
+                        <MenuItem mnemonicParsing="false" text="Level 2 Optimization" onAction="#optimizeLevelTWo"/>
+                        <MenuItem mnemonicParsing="false" text="Level 3 Optimization" onAction="#optimizeLevelThree"/>
+                    </items>
 
-                    <MenuItem fx:id="codeGeneration" mnemonicParsing="false" text="Code Generation Options">
-                        <accelerator>
-                            <KeyCodeCombination alt="UP" code="A" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                        </accelerator>
-                    </MenuItem>
 
-                    <MenuItem fx:id="codeOptimization" mnemonicParsing="false" text="Code Optimization Options">
-                        <accelerator>
-                            <KeyCodeCombination alt="UP" code="B" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                        </accelerator>
-                    </MenuItem>
+                </Menu>
+
+                    <Menu mnemonicParsing="false" text="Code Generation" fx:id="codeGeneration">
+                        <items>
+                            <MenuItem mnemonicParsing="false"/>
+                            <MenuItem mnemonicParsing="false"/>
+                        </items>
+
+
+                    </Menu>
+
                <SeparatorMenuItem mnemonicParsing="false" />
 
-                    <MenuItem fx:id="codeDevelopment" mnemonicParsing="false" text="Developer Options">
-                        <accelerator>
-                            <KeyCodeCombination alt="UP" code="C" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                        </accelerator>
-                    </MenuItem>
+               <Menu mnemonicParsing="false" text="Code Developer" fx:id="codeDevelopment">
+                 <items>
+                   <MenuItem mnemonicParsing="false" text="Generate SRCFILE file" onAction="#generateSrcfice"/>
+      
+                          <MenuItem mnemonicParsing="false" text="Developer Options">
+                              <accelerator>
+                                  <KeyCodeCombination alt="UP" code="C" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                              </accelerator>
+                          </MenuItem>
+                 </items>
+               </Menu>
+
                 </items>
             </Menu>
 
@@ -124,8 +144,9 @@
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="background">
                 <children>
                     <Label layoutX="39.0" layoutY="39.0" styleClass="label-header" text="File Lists" AnchorPane.leftAnchor="39.0" AnchorPane.topAnchor="39.0" />
-               <ListView fx:id="fileListView" accessibleRole="CHECK_BOX" layoutX="39.0" layoutY="73.0" prefHeight="200.0" prefWidth="700.0">
+               <ListView fx:id="fileListView" accessibleRole="CHECK_BOX" layoutX="39.0" layoutY="56.0" prefHeight="200.0" prefWidth="154.0">
                </ListView>
+               <TextArea layoutX="214.0" layoutY="56.0" prefHeight="298.0" prefWidth="543.0" />
 
                 </children>
             </AnchorPane>

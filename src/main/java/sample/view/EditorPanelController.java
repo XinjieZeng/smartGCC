@@ -147,7 +147,7 @@ public class EditorPanelController {
         commandHistory.getItems().add(menuItem);
 
 
-        menuItem.setOnAction(e -> compileCPlusFile());
+        menuItem.setOnAction(e -> compileToExecutableFile());
 
         if(commandHistory.getItems().size() >= 5){
             commandHistory.getItems().get(0).setVisible(false);
@@ -155,7 +155,7 @@ public class EditorPanelController {
     }
 
     @FXML
-    private void compileCPlusFile(){
+    private void compileToExecutableFile(){
 
         List<String> selectedFiles = fileListView.getSelectionModel().getSelectedItems();
 
@@ -163,7 +163,7 @@ public class EditorPanelController {
             return;
         }
 
-        String command = CommandType.CPLUSCOMPILE.toString();
+        String command = CommandType.COMPILE_C_PLUS.toString();
         executeFiles(selectedFiles, command, CommandType.CPLUS_COMPILE_COMMAND);
     }
 
@@ -185,7 +185,7 @@ public class EditorPanelController {
             return;
         }
 
-        String command = CommandType.CCOMPILE.toString();
+        String command = CommandType.COMPILE_TO_EXECUTABLE.toString();
         executeFiles(selectedFiles, command, CommandType.C_COMPILE_COMMAND);
     }
 
@@ -206,25 +206,123 @@ public class EditorPanelController {
         return command;
     }
 
-    @FXML
-    private void cPlusDebug(){
 
+    /**
+     * gcc debugging option gcc -g
+     * -g
+     * Produce debugging information in the operating system’s native format
+     * (stabs, COFF, XCOFF, or DWARF). GDB can work with this debugging information.
+     *
+     * On most systems that use stabs format, -g enables use of extra debugging information
+     * that only GDB can use; this extra information makes debugging work better in GDB
+     * but probably makes other debuggers crash or refuse to read the program.
+     *
+     * gcc -g hello.c -o hello
+     */
+    @FXML
+    private void produceNativeDubuggingInfo(){
+        List<String> selectedFiles = fileListView.getSelectionModel().getSelectedItems();
+        String command = CommandType.DEBUG_G.toString();
+        executeFiles(selectedFiles, command, CommandType.C_DEBUG_COMMAND);
     }
 
+    /**
+     * gcc debugging option gcc -ggdb
+     * Produce debugging information for use by GDB. This means to use the most expressive format available
+     * (DWARF, stabs, or the native format if neither of those are supported),
+     * including GDB extensions if at all possible.
+     *
+     * gcc -ggdb hello.c -o hello
+     */
     @FXML
-    private void cDebug(){
+    private void produceDwarfDebuffingInfo(){
         List<String> selectedFiles = fileListView.getSelectionModel().getSelectedItems();
-        String command = CommandType.CDEBUG.toString();
+        String command = CommandType.DEBUG_GGDB.toString();
+        executeFiles(selectedFiles, command, CommandType.DEBUG_GGDB);
+    }
+
+
+
+    /**
+     * gcc developer options
+     * Write a SRCFILE.opt-record.json.gz file detailing what optimizations were performed,
+     * for those optimizations that support -fopt-info.
+     *
+     * gcc  -fsave-optimization-record hello.c
+     */
+    @FXML
+    private void generateSrcfice(){
+        List<String> selectedFiles = fileListView.getSelectionModel().getSelectedItems();
+        String command = CommandType.DEVELOPER_OPTIMIZATION.toString();
         executeFiles(selectedFiles, command, CommandType.C_DEBUG_COMMAND);
     }
 
 
+    /**
+     * gcc link options
+     * gcc -shared hello.o -o hello.so
+     * Produce a shared object which can then be linked with other objects to form an executable.
+     * Not all systems support this option. For predictable results,
+     * you must also specify the same set of options used for compilation
+     * (-fpic, -fPIC, or model suboptions) when you specify this linker option.1
+     */
+    @FXML
+    private void linkCFile(){
+        List<String> selectedFiles = fileListView.getSelectionModel().getSelectedItems();
+        String command = CommandType.LINK_C.toString();
+        executeFiles(selectedFiles, command, CommandType.LINK_C);
+    }
 
+    /**
+     * exit the program
+     */
     @FXML
     private void handleExit() {
         System.exit(0);
     }
 
+
+    /**
+     * gcc optimization command (level 2)
+     * gcc -Wall -O2 -c hello.c
+     * Optimize even more. GCC performs nearly all supported optimizations that do not involve a space-speed tradeoff.
+     * As compared to -O, this option increases both compilation time and the performance of the generated code.
+     */
+    @FXML
+    private void optimizeLevelTWo(){
+        List<String> selectedFiles = fileListView.getSelectionModel().getSelectedItems();
+        String command = CommandType.OPTIMIZE_C_LEVEL2.toString();
+
+        executeFiles(selectedFiles, command, CommandType.OPTIMIZE_C_LEVEL2);
+    }
+
+    /**
+     * gcc optimization command (level 1)
+     * gcc -Wall -O1 -c hello.c
+     * With -O, the compiler tries to reduce code size and execution time,
+     * without performing any optimizations that take a great deal of compilation time.
+     */
+    @FXML
+    private void optimizeLevelOne(){
+        List<String> selectedFiles = fileListView.getSelectionModel().getSelectedItems();
+        String command = CommandType.OPTIMIZE_C_LEVEL2.toString();
+
+        executeFiles(selectedFiles, command, CommandType.OPTIMIZE_C_LEVEL2);
+    }
+
+
+    /**
+     * gcc optimization command (level 3)
+     * gcc -Wall -O3 -c hello.c
+     * Optimize yet more. -O3 turns on all optimizations specified by -O2
+     */
+    @FXML
+    private void optimizeLevelThree(){
+        List<String> selectedFiles = fileListView.getSelectionModel().getSelectedItems();
+        String command = CommandType.OPTIMIZE_C_LEVEL2.toString();
+
+        executeFiles(selectedFiles, command, CommandType.OPTIMIZE_C_LEVEL2);
+    }
 
 
     public void setMainApp(MainApp mainApp){
