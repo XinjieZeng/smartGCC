@@ -1,38 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.layout.AnchorPane?>
-
-<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Text?>
+
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.Button?>
 <AnchorPane prefHeight="300.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.view.ToolBoxPanelController">
 
     <children>
-
-      <TabPane prefHeight="400.0" prefWidth="550.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <TabPane prefHeight="233.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="67.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <tabs>
 
             <Tab text="Compile">
                 <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                        <GridPane prefHeight="200" prefWidth="320"
-                                  alignment="center" hgap="10" vgap="10">
+                        <GridPane alignment="center" hgap="10" prefHeight="200" prefWidth="320" vgap="10">
 
-                            <Text text="Compile Options"
-                                  GridPane.columnIndex="0" GridPane.rowIndex="0"
-                                  GridPane.columnSpan="2"/>
+                            <Text text="Compile Options" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0" />
 
                             <RadioButton mnemonicParsing="false" text="Compile to Executable File" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                 <toggleGroup>
-                                    <ToggleGroup fx:id="compiling"/>
+                                    <ToggleGroup fx:id="compileToggleGroup" />
                                 </toggleGroup>
                             </RadioButton>
 
-                            <RadioButton toggleGroup="$compiling" mnemonicParsing="false" text="Compile to Object File" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                            <RadioButton mnemonicParsing="false" text="Compile to object File" toggleGroup="$compileToggleGroup" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <columnConstraints>
+                           <ColumnConstraints />
+                           <ColumnConstraints />
+                        </columnConstraints>
+                        <rowConstraints>
+                           <RowConstraints />
+                           <RowConstraints />
+                           <RowConstraints />
+                        </rowConstraints>
                         </GridPane>
                     </AnchorPane>
                 </content>
@@ -40,42 +49,25 @@
 
             <Tab text="Linking">
                 <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" >
-                        <GridPane prefHeight="200" prefWidth="320"
-                                  alignment="center" hgap="10" vgap="10">
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                        <GridPane alignment="center" hgap="10" prefHeight="200" prefWidth="320" vgap="10">
 
-                            <Text text="Linking Options"
-                                  GridPane.columnIndex="0" GridPane.rowIndex="0"
-                                  GridPane.columnSpan="2"/>
+                            <Text text="Linking Options" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0" />
 
-                            <RadioButton mnemonicParsing="false" text="Link -shared" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <RadioButton mnemonicParsing="false" text="link -shared " GridPane.columnIndex="1" GridPane.rowIndex="1">
                                 <toggleGroup>
-                                    <ToggleGroup fx:id="linking"/>
+                                    <ToggleGroup fx:id="linkToggleGroup" />
                                 </toggleGroup>
                             </RadioButton>
+                        <columnConstraints>
+                           <ColumnConstraints />
+                           <ColumnConstraints />
+                        </columnConstraints>
+                        <rowConstraints>
+                           <RowConstraints />
+                           <RowConstraints />
+                        </rowConstraints>
 
-                        </GridPane>
-                    </AnchorPane>
-                </content>
-            </Tab>
-
-            <Tab text="Execute">
-                <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" >
-                        <GridPane prefHeight="200" prefWidth="320"
-                                  alignment="center" hgap="10" vgap="10">
-
-                            <Text text="Execute Options"
-                                  GridPane.columnIndex="0" GridPane.rowIndex="0"
-                                  GridPane.columnSpan="2"/>
-
-                            <RadioButton mnemonicParsing="false" text="option 1" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                <toggleGroup>
-                                    <ToggleGroup fx:id="executing"/>
-                                </toggleGroup>
-                            </RadioButton>
-
-                            <RadioButton toggleGroup="$executing" mnemonicParsing="false" text="option 2" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         </GridPane>
                     </AnchorPane>
                 </content>
@@ -83,21 +75,27 @@
 
             <Tab text="Debug">
                 <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" >
-                        <GridPane prefHeight="200" prefWidth="320"
-                                  alignment="center" hgap="10" vgap="10">
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                        <GridPane alignment="center" hgap="10" prefHeight="200" prefWidth="320" vgap="10">
 
-                            <Text text="Debugging Options"
-                                  GridPane.columnIndex="0" GridPane.rowIndex="0"
-                                  GridPane.columnSpan="2"/>
+                            <Text text="Debugging Options" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0" />
 
-                            <RadioButton mnemonicParsing="false" text="debug -g" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <RadioButton mnemonicParsing="false" text="debug -g " GridPane.columnIndex="1" GridPane.rowIndex="1">
                                 <toggleGroup>
-                                    <ToggleGroup fx:id="debugging"/>
+                                    <ToggleGroup fx:id="debugToggleGroup" />
                                 </toggleGroup>
                             </RadioButton>
 
-                            <RadioButton toggleGroup="$debugging" mnemonicParsing="false" text="debug -gdbb" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                            <RadioButton mnemonicParsing="false" text="debug -gdbb " toggleGroup="$debugToggleGroup" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <columnConstraints>
+                           <ColumnConstraints />
+                           <ColumnConstraints />
+                        </columnConstraints>
+                        <rowConstraints>
+                           <RowConstraints />
+                           <RowConstraints />
+                           <RowConstraints />
+                        </rowConstraints>
                         </GridPane>
                     </AnchorPane>
                 </content>
@@ -105,21 +103,27 @@
 
             <Tab text="Code Generation">
                 <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" >
-                        <GridPane prefHeight="200" prefWidth="320"
-                                  alignment="center" hgap="10" vgap="10">
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                        <GridPane alignment="center" hgap="10" prefHeight="200" prefWidth="320" vgap="10">
 
-                            <Text text="Code Generation Options"
-                                  GridPane.columnIndex="0" GridPane.rowIndex="0"
-                                  GridPane.columnSpan="2"/>
+                            <Text text="Code Generation Options" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0" />
 
-                            <RadioButton mnemonicParsing="false" text="option 1" selected="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <RadioButton mnemonicParsing="false" text="code gen -ftrapv" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                 <toggleGroup>
-                                    <ToggleGroup fx:id="generating"/>
+                                    <ToggleGroup fx:id="genCodeToggleGroup" />
                                 </toggleGroup>
                             </RadioButton>
 
-                            <RadioButton toggleGroup="$generating" mnemonicParsing="false" text="option 2" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                            <RadioButton mnemonicParsing="false" text="code gen -fwrapv" toggleGroup="$genCodeToggleGroup" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <columnConstraints>
+                           <ColumnConstraints />
+                           <ColumnConstraints />
+                        </columnConstraints>
+                        <rowConstraints>
+                           <RowConstraints />
+                           <RowConstraints />
+                           <RowConstraints />
+                        </rowConstraints>
                         </GridPane>
                     </AnchorPane>
                 </content>
@@ -127,22 +131,29 @@
 
             <Tab text="Code Optimization">
                 <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" >
-                        <GridPane prefHeight="200" prefWidth="320"
-                                  alignment="center" hgap="10" vgap="10">
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                        <GridPane alignment="center" hgap="10" prefHeight="200" prefWidth="320" vgap="10">
 
-                            <Text text="Code Optimization Options"
-                                  GridPane.columnIndex="0" GridPane.rowIndex="0"
-                                  GridPane.columnSpan="2"/>
+                            <Text text="Code Optimization Options" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0" />
 
-                            <RadioButton mnemonicParsing="false" text="Level 1 Optimization" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <RadioButton mnemonicParsing="false" text="optimization level 1" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                 <toggleGroup>
-                                    <ToggleGroup fx:id="optimizing"/>
+                                    <ToggleGroup fx:id="optimizeToggleGroup" />
                                 </toggleGroup>
                             </RadioButton>
 
-                            <RadioButton toggleGroup="$optimizing" mnemonicParsing="false" text="Level 2 Optimization" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                            <RadioButton toggleGroup="$optimizing" mnemonicParsing="false" text="Level 3 Optimization" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                            <RadioButton mnemonicParsing="false" text="optimization level 2" toggleGroup="$optimizeToggleGroup" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                            <RadioButton mnemonicParsing="false" text="optimization level 3" toggleGroup="$optimizeToggleGroup" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <columnConstraints>
+                           <ColumnConstraints />
+                           <ColumnConstraints />
+                        </columnConstraints>
+                        <rowConstraints>
+                           <RowConstraints />
+                           <RowConstraints />
+                           <RowConstraints />
+                           <RowConstraints />
+                        </rowConstraints>
 
                         </GridPane>
                     </AnchorPane>
@@ -151,21 +162,26 @@
 
             <Tab text="Developer">
                 <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" >
-                        <GridPane prefHeight="200" prefWidth="320"
-                                  alignment="center" hgap="10" vgap="10">
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                        <GridPane alignment="center" hgap="10" prefHeight="200" prefWidth="320" vgap="10">
 
-                            <Text text="Developer Options"
-                                  GridPane.columnIndex="0" GridPane.rowIndex="0"
-                                  GridPane.columnSpan="2"/>
+                            <Text text="Developer Options" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0" />
 
-                            <RadioButton mnemonicParsing="false" text="Developer Optimization" selected="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <RadioButton mnemonicParsing="false" text="developer -fsave-optimization-record " GridPane.columnIndex="1" GridPane.rowIndex="1">
                                 <toggleGroup>
-                                    <ToggleGroup fx:id="developer"/>
+                                    <ToggleGroup fx:id="developerToggleGroup" />
                                 </toggleGroup>
                             </RadioButton>
 
-                            <RadioButton toggleGroup="$developer" mnemonicParsing="false" text="Option 2" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                            <columnConstraints>
+                           <ColumnConstraints />
+                           <ColumnConstraints />
+                        </columnConstraints>
+                        <rowConstraints>
+                           <RowConstraints />
+                           <RowConstraints />
+                           <RowConstraints />
+                        </rowConstraints>
                         </GridPane>
                     </AnchorPane>
                 </content>
@@ -173,6 +189,15 @@
 
         </tabs>
       </TabPane>
+
+
+            <ButtonBar layoutX="176.0" layoutY="233.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0">
+                <buttons>
+                    <Button mnemonicParsing="false" prefWidth="120.0" text="Cancel" onAction="#handleCancel"/>
+                    <Button defaultButton="true" mnemonicParsing="false" text="OK" onAction="#handleOK"/>
+                </buttons>
+            </ButtonBar>
+
     </children>
     <opaqueInsets>
         <Insets />

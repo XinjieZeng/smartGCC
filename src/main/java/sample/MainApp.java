@@ -1,14 +1,18 @@
 package sample;
 
 import javafx.application.Application;
+import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import sample.model.UserType;
 import sample.view.EditorPanelController;
+import sample.view.IdleMonitor;
 import sample.view.ToolBoxPanelController;
 import sample.view.UserSwitchDialogueController;
 
@@ -21,6 +25,7 @@ public class MainApp extends Application {
 
     private Stage primaryStage;
     private AnchorPane rootLayout;
+    private EditorPanelController editorPanelController;
 
     public MainApp(){}
 
@@ -44,26 +49,34 @@ public class MainApp extends Application {
             Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
 
+
+
+
+
             // Give the controller access to the main app.
-            EditorPanelController controller = loader.getController();
-            controller.setMainApp(this);
+            editorPanelController = loader.getController();
+            editorPanelController.setMainApp(this);
 
             if(userType == UserType.NOVICE){
-               controller.disableFunctionalitiesFromNovice();
+                editorPanelController.disableFunctionalitiesFromNovice();
             }
             else if(userType == UserType.TYPICAL){
-                controller.disableFunctionalitiesFromTypical();
+                editorPanelController.disableFunctionalitiesFromTypical();
             }
             else{
-                controller.disableFunctionalitiesFromExpert();
+                editorPanelController.disableFunctionalitiesFromExpert();
             }
 
             primaryStage.show();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    public EditorPanelController getEditorPanelController(){
+        return editorPanelController;
+    }
     public void switchUserDialogue(){
         try {
 
