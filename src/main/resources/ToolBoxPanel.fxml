@@ -26,13 +26,13 @@
                                   GridPane.columnIndex="0" GridPane.rowIndex="0"
                                   GridPane.columnSpan="2"/>
 
-                            <RadioButton mnemonicParsing="false" text="option 1" selected="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <RadioButton mnemonicParsing="false" text="Compile to Executable File" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                 <toggleGroup>
                                     <ToggleGroup fx:id="compiling"/>
                                 </toggleGroup>
                             </RadioButton>
 
-                            <RadioButton toggleGroup="$compiling" mnemonicParsing="false" text="option 2" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                            <RadioButton toggleGroup="$compiling" mnemonicParsing="false" text="Compile to Object File" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         </GridPane>
                     </AnchorPane>
                 </content>
@@ -48,13 +48,12 @@
                                   GridPane.columnIndex="0" GridPane.rowIndex="0"
                                   GridPane.columnSpan="2"/>
 
-                            <RadioButton mnemonicParsing="false" text="option 1" selected="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <RadioButton mnemonicParsing="false" text="Link -shared" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                 <toggleGroup>
                                     <ToggleGroup fx:id="linking"/>
                                 </toggleGroup>
                             </RadioButton>
 
-                            <RadioButton toggleGroup="$linking" mnemonicParsing="false" text="option 2" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         </GridPane>
                     </AnchorPane>
                 </content>
@@ -70,7 +69,7 @@
                                   GridPane.columnIndex="0" GridPane.rowIndex="0"
                                   GridPane.columnSpan="2"/>
 
-                            <RadioButton mnemonicParsing="false" text="option 1" selected="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <RadioButton mnemonicParsing="false" text="option 1" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                 <toggleGroup>
                                     <ToggleGroup fx:id="executing"/>
                                 </toggleGroup>
@@ -92,13 +91,13 @@
                                   GridPane.columnIndex="0" GridPane.rowIndex="0"
                                   GridPane.columnSpan="2"/>
 
-                            <RadioButton mnemonicParsing="false" text="option 1" selected="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <RadioButton mnemonicParsing="false" text="debug -g" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                 <toggleGroup>
                                     <ToggleGroup fx:id="debugging"/>
                                 </toggleGroup>
                             </RadioButton>
 
-                            <RadioButton toggleGroup="$debugging" mnemonicParsing="false" text="option 2" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                            <RadioButton toggleGroup="$debugging" mnemonicParsing="false" text="debug -gdbb" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         </GridPane>
                     </AnchorPane>
                 </content>
@@ -136,13 +135,15 @@
                                   GridPane.columnIndex="0" GridPane.rowIndex="0"
                                   GridPane.columnSpan="2"/>
 
-                            <RadioButton mnemonicParsing="false" text="option 1" selected="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <RadioButton mnemonicParsing="false" text="Level 1 Optimization" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                 <toggleGroup>
                                     <ToggleGroup fx:id="optimizing"/>
                                 </toggleGroup>
                             </RadioButton>
 
-                            <RadioButton toggleGroup="$optimizing" mnemonicParsing="false" text="option 2" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                            <RadioButton toggleGroup="$optimizing" mnemonicParsing="false" text="Level 2 Optimization" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                            <RadioButton toggleGroup="$optimizing" mnemonicParsing="false" text="Level 3 Optimization" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
                         </GridPane>
                     </AnchorPane>
                 </content>
@@ -158,7 +159,7 @@
                                   GridPane.columnIndex="0" GridPane.rowIndex="0"
                                   GridPane.columnSpan="2"/>
 
-                            <RadioButton mnemonicParsing="false" text="Option 1" selected="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <RadioButton mnemonicParsing="false" text="Developer Optimization" selected="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                 <toggleGroup>
                                     <ToggleGroup fx:id="developer"/>
                                 </toggleGroup>

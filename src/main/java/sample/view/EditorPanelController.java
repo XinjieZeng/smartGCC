@@ -59,12 +59,12 @@ public class EditorPanelController {
     }
 
     /**
-     * Opens a FileChooser to let the user select an address book to load.
+     * Opens a FileChooser to let the user select a cFile to load.
      */
     @FXML
     private void handleOpen() {
         FileChooser fileChooser = new FileChooser();
-        List<String> extensions = Arrays.asList("*.cpp", "*.c", "*.h");
+        List<String> extensions = Arrays.asList("*.c", "*.h");
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
                 " C files(*.c)", extensions);
         fileChooser.getExtensionFilters().add(extFilter);
@@ -78,6 +78,7 @@ public class EditorPanelController {
         fileListView.getItems().add(file.getName() + " " + path);
 
     }
+
 
 
     @FXML
@@ -104,6 +105,11 @@ public class EditorPanelController {
 
     }
 
+    /**
+     * execute the command from smartGCC interface on gcc compiler and return the output back to smartGCC
+     * @param command
+     * @param file
+     */
     private void executeCommand(String command, String file) {
 
         CommandLine commandLine = CommandLine.parse(command);
@@ -131,6 +137,10 @@ public class EditorPanelController {
     }
 
 
+    /**
+     * add command history
+     * @param commandType
+     */
     private void addCommandHistory(CommandType commandType){
         for(MenuItem menuItem: commandHistory.getItems()){
             if(menuItem.getText().equalsIgnoreCase("empty")){
@@ -147,24 +157,11 @@ public class EditorPanelController {
         commandHistory.getItems().add(menuItem);
 
 
-        menuItem.setOnAction(e -> compileCPlusFile());
+        menuItem.setOnAction(e -> compileToExecutableFile());
 
         if(commandHistory.getItems().size() >= 5){
             commandHistory.getItems().get(0).setVisible(false);
         }
-    }
-
-    @FXML
-    private void compileCPlusFile(){
-
-        List<String> selectedFiles = fileListView.getSelectionModel().getSelectedItems();
-
-        if(isFileNotSelect(selectedFiles)){
-            return;
-        }
-
-        String command = CommandType.CPLUSCOMPILE.toString();
-        executeFiles(selectedFiles, command, CommandType.CPLUS_COMPILE_COMMAND);
     }
 
     private boolean isFileNotSelect(List<String> selectedFiles){
@@ -176,20 +173,166 @@ public class EditorPanelController {
         return false;
     }
 
-
+    /**
+     * gcc hello.c -o hello
+     * one step compilation
+     * compile c file to executable file
+     */
     @FXML
-    private void compileCFile(){
+    private void compileToExecutableFile(){
+
         List<String> selectedFiles = fileListView.getSelectionModel().getSelectedItems();
 
         if(isFileNotSelect(selectedFiles)){
             return;
         }
 
-        String command = CommandType.CCOMPILE.toString();
-        executeFiles(selectedFiles, command, CommandType.C_COMPILE_COMMAND);
+        String command = CommandType.COMPILE_TO_EXECUTABLE.toString();
+        executeFiles(selectedFiles, command, CommandType.COMPILE_EXECUTABLE_COMMAND);
     }
 
+
+    /**
+     * compile c file to object file
+     * gcc -E hello.c -o hello.o
+     */
+    @FXML
+    private void compileToObjectFile(){
+        List<String> selectedFiles = fileListView.getSelectionModel().getSelectedItems();
+
+        if(isFileNotSelect(selectedFiles)){
+            return;
+        }
+
+
+        String command = CommandType.COMPILE_TO_OBJECT_FILE.toString();
+        executeFiles(selectedFiles, command, CommandType.COMPILE_OBJECT_COMMAND);
+    }
+
+    /**
+     * gcc link options
+     * gcc -shared hello.o -o hello.so
+     * Produce a shared object which can then be linked with other objects to form an executable.
+     * Not all systems support this option. For predictable results,
+     * you must also specify the same set of options used for compilation
+     * (-fpic, -fPIC, or model suboptions) when you specify this linker option.1
+     *
+     */
+    @FXML
+    private void linkCFile(){
+        List<String> selectedFiles = fileListView.getSelectionModel().getSelectedItems();
+        String command = CommandType.LINK_C.toString();
+        executeFiles(selectedFiles, command, CommandType.LINK_C);
+    }
+
+    /**
+     * gcc debugging option gcc -g
+     * -g
+     * Produce debugging information in the operating system’s native format
+     * (stabs, COFF, XCOFF, or DWARF). GDB can work with this debugging information.
+     *
+     * On most systems that use stabs format, -g enables use of extra debugging information
+     * that only GDB can use; this extra information makes debugging work better in GDB
+     * but probably makes other debuggers crash or refuse to read the program.
+     *
+     * gcc -g hello.c -o hello
+     */
+    @FXML
+    private void produceNativeDubuggingInfo(){
+        List<String> selectedFiles = fileListView.getSelectionModel().getSelectedItems();
+        String command = CommandType.DEBUG_G.toString();
+        executeFiles(selectedFiles, command, CommandType.DEBUG_G_COMMAND);
+    }
+
+    /**
+     * gcc debugging option gcc -ggdb
+     * Produce debugging information for use by GDB. This means to use the most expressive format available
+     * (DWARF, stabs, or the native format if neither of those are supported),
+     * including GDB extensions if at all possible.
+     *
+     * gcc -ggdb hello.c -o hello
+     */
+    @FXML
+    private void produceDwarfDebuffingInfo(){
+        List<String> selectedFiles = fileListView.getSelectionModel().getSelectedItems();
+        String command = CommandType.DEBUG_GGDB.toString();
+        executeFiles(selectedFiles, command, CommandType.DEBUG_GGDB);
+    }
+
+    /**
+     * gcc optimization command (level 2)
+     * gcc -Wall -O2 -c hello.c
+     * Optimize even more. GCC performs nearly all supported optimizations that do not involve a space-speed tradeoff.
+     * As compared to -O, this option increases both compilation time and the performance of the generated code
+     * and generate object file.
+     */
+    @FXML
+    private void optimizeLevelTWo(){
+        List<String> selectedFiles = fileListView.getSelectionModel().getSelectedItems();
+        String command = CommandType.OPTIMIZE_C_LEVEL2.toString();
+
+        executeFiles(selectedFiles, command, CommandType.OPTIMIZE_LEVEL2_COMMAND);
+    }
+
+    /**
+     * gcc optimization command (level 1)
+     * gcc -Wall -O1 -c hello.c
+     *
+     * With -O, the compiler tries to reduce code size and execution time,
+     * without performing any optimizations that take a great deal of compilation time
+     * and generate object file.
+     */
+    @FXML
+    private void optimizeLevelOne(){
+        List<String> selectedFiles = fileListView.getSelectionModel().getSelectedItems();
+        String command = CommandType.OPTIMIZE_C_LEVEL1.toString();
+
+        executeFiles(selectedFiles, command, CommandType.OPTIMIZE_LEVEL1_COMMAND);
+    }
+
+
+    /**
+     * gcc optimization command (level 3)
+     * gcc -Wall -O3 -c hello.c
+     * Optimize yet more. -O3 turns on all optimizations specified by -O2
+     * and generate the object file
+     */
+    @FXML
+    private void optimizeLevelThree(){
+        List<String> selectedFiles = fileListView.getSelectionModel().getSelectedItems();
+        String command = CommandType.OPTIMIZE_C_LEVEL3.toString();
+
+        executeFiles(selectedFiles, command, CommandType.OPTIMIZE_LEVEL3_COMMAND);
+    }
+
+
+    /**
+     * gcc developer options
+     * Write a SRCFILE.opt-record.json.gz file detailing what optimizations were performed,
+     * for those optimizations that support -fopt-info.
+     *
+     * gcc  -fsave-optimization-record hello.c
+     */
+    @FXML
+    private void generateSrcfice(){
+        List<String> selectedFiles = fileListView.getSelectionModel().getSelectedItems();
+        String command = CommandType.DEVELOPER_OPTIMIZATION.toString();
+        executeFiles(selectedFiles, command, CommandType.DEVELOPER_OPTIMIZATION_COMMAND);
+    }
+
+
+
     private void executeFiles(List<String> selectedFiles, String command, CommandType commandType){
+
+        if(commandType == CommandType.COMPILE_OBJECT_COMMAND){
+            for(String file: selectedFiles) {
+                String fileName = file.split(" ")[0];
+                command = constructCommand(command, file, fileName) + ".o";
+                executeCommand(command, fileName);
+                addCommandHistory(commandType);
+            }
+        }
+
         for(String file: selectedFiles) {
             String fileName = file.split(" ")[0];
             command = constructCommand(command, file, fileName);
@@ -197,6 +340,7 @@ public class EditorPanelController {
             addCommandHistory(commandType);
         }
     }
+
 
     private String constructCommand(String command, String item, String fileName) {
         Path sourceFilePath = Paths.get(item.split(" ")[1]);
@@ -206,26 +350,22 @@ public class EditorPanelController {
         return command;
     }
 
-    @FXML
-    private void cPlusDebug(){
 
-    }
-
-    @FXML
-    private void cDebug(){
-        List<String> selectedFiles = fileListView.getSelectionModel().getSelectedItems();
-        String command = CommandType.CDEBUG.toString();
-        executeFiles(selectedFiles, command, CommandType.C_DEBUG_COMMAND);
-    }
-
-
-
+    /**
+     * exit the program
+     */
     @FXML
     private void handleExit() {
         System.exit(0);
     }
 
 
+
+
+    @FXML
+    private void run(){
+
+    }
 
     public void setMainApp(MainApp mainApp){
         this.mainApp = mainApp;
