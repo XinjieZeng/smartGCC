@@ -54,7 +54,7 @@
                <Menu mnemonicParsing="false" text="Compile">
                  <items>
                    <MenuItem mnemonicParsing="false" onAction="#compileToExecutableFile" text="Compile to Executable File" />
-                     <MenuItem mnemonicParsing="false" onAction="#compileCFile" text="Compile to Object File" />
+                     <MenuItem mnemonicParsing="false" onAction="#compileToObjectFile" text="Compile to Object File" />
                  </items>
                </Menu>
                <Menu mnemonicParsing="false" text="Linking">
@@ -103,12 +103,6 @@
                <Menu mnemonicParsing="false" text="Code Developer" fx:id="codeDevelopment">
                  <items>
                    <MenuItem mnemonicParsing="false" text="Generate SRCFILE file" onAction="#generateSrcfice"/>
-      
-                          <MenuItem mnemonicParsing="false" text="Developer Options">
-                              <accelerator>
-                                  <KeyCodeCombination alt="UP" code="C" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                              </accelerator>
-                          </MenuItem>
                  </items>
                </Menu>
 
@@ -116,9 +110,10 @@
             </Menu>
 
 
-            <Menu id="run" fx:id="run" mnemonicParsing="false" text="Run">
+            <Menu id="run" mnemonicParsing="false" text="Run">
             </Menu>
-            <Menu mnemonicParsing="false" text="Stop" />
+            <Menu mnemonicParsing="false" text="Stop">
+            </Menu>
 
             <Menu fx:id="commandHistory" mnemonicParsing="false" text="History">
                 <items>
