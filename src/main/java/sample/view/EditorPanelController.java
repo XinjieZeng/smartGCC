@@ -174,6 +174,7 @@ public class EditorPanelController {
     }
 
     /**
+     * gcc compile option1
      * gcc hello.c -o hello
      * one step compilation
      * compile c file to executable file
@@ -193,6 +194,7 @@ public class EditorPanelController {
 
 
     /**
+     * gcc compile option2
      * compile c file to object file
      * gcc -E hello.c -o hello.o
      */
@@ -210,7 +212,7 @@ public class EditorPanelController {
     }
 
     /**
-     * gcc link options
+     * gcc link option
      * gcc -shared hello.o -o hello.so
      * Produce a shared object which can then be linked with other objects to form an executable.
      * Not all systems support this option. For predictable results,
@@ -226,6 +228,7 @@ public class EditorPanelController {
     }
 
     /**
+     * gcc debugging option1
      * gcc debugging option gcc -g
      * -g
      * Produce debugging information in the operating system’s native format
@@ -245,6 +248,7 @@ public class EditorPanelController {
     }
 
     /**
+     * gcc debugging option 2
      * gcc debugging option gcc -ggdb
      * Produce debugging information for use by GDB. This means to use the most expressive format available
      * (DWARF, stabs, or the native format if neither of those are supported),
@@ -260,6 +264,7 @@ public class EditorPanelController {
     }
 
     /**
+     * gcc optimization option 1
      * gcc optimization command (level 2)
      * gcc -Wall -O2 -c hello.c
      * Optimize even more. GCC performs nearly all supported optimizations that do not involve a space-speed tradeoff.
@@ -275,6 +280,7 @@ public class EditorPanelController {
     }
 
     /**
+     * gcc optimization option 2
      * gcc optimization command (level 1)
      * gcc -Wall -O1 -c hello.c
      *
@@ -292,6 +298,7 @@ public class EditorPanelController {
 
 
     /**
+     * gcc optimization option 3
      * gcc optimization command (level 3)
      * gcc -Wall -O3 -c hello.c
      * Optimize yet more. -O3 turns on all optimizations specified by -O2
@@ -305,9 +312,37 @@ public class EditorPanelController {
         executeFiles(selectedFiles, command, CommandType.OPTIMIZE_LEVEL3_COMMAND);
     }
 
+    /**
+     * code Generation option 1
+     * This option generates traps for signed overflow on addition, subtraction, multiplication operations.
+     * The options -ftrapv and -fwrapv override each other, so using -ftrapv -fwrapv on the command-line results in -fwrapv being effective.
+     * Note that only active options override, so using -ftrapv -fwrapv -fno-wrapv on the command-line results in -ftrapv being effective.
+     */
+    @FXML
+    private void codeGenerateOption1(){
+        List<String> selectedFiles = fileListView.getSelectionModel().getSelectedItems();
+        String command = CommandType.CODE_GEN1_COMMAND.toString();
+
+        executeFiles(selectedFiles, command, CommandType.CODE_GEN1_COMMAND);
+    }
 
     /**
-     * gcc developer options
+     * code generation option 2
+     * This option generates traps for signed overflow on addition, subtraction, multiplication operations.
+     * The options -ftrapv and -fwrapv override each other, so using -ftrapv -fwrapv on the command-line results in -fwrapv being effective.
+     * Note that only active options override, so using -ftrapv -fwrapv -fno-wrapv on the command-line results in -ftrapv being effective.
+     */
+    @FXML
+    private void codeGenerateOption2(){
+        List<String> selectedFiles = fileListView.getSelectionModel().getSelectedItems();
+        String command = CommandType.CODE_GEN2_COMMAND.toString();
+
+        executeFiles(selectedFiles, command, CommandType.CODE_GEN2_COMMAND);
+    }
+
+
+    /**
+     * gcc developer option1
      * Write a SRCFILE.opt-record.json.gz file detailing what optimizations were performed,
      * for those optimizations that support -fopt-info.
      *

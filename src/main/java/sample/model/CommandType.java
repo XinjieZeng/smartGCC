@@ -10,6 +10,8 @@ public enum CommandType {
     OPTIMIZE_LEVEL1_COMMAND("Level 1 Optimization"),
     OPTIMIZE_LEVEL2_COMMAND("Level 2 Optimization"),
     OPTIMIZE_LEVEL3_COMMAND("level 3 Optimization"),
+    CODE_GEN1_COMMAND("gcc -ftrapv"),
+    CODE_GEN2_COMMAND("gcc -fwrapv"),
     DEVELOPER_OPTIMIZATION_COMMAND("developer optimization"),
     COMPILE_C_PLUS("g++ -Wall -Werror -pedantic -std=c++1y "),
     COMPILE_TO_EXECUTABLE("gcc "),

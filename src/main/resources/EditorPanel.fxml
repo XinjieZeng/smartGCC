@@ -91,7 +91,8 @@
 
                     <Menu mnemonicParsing="false" text="Code Generation" fx:id="codeGeneration">
                         <items>
-                            <MenuItem mnemonicParsing="false"/>
+                            <MenuItem mnemonicParsing="false" text="gcc -ftrapv" onAction="#codeGenerateOption1"/>
+                            <MenuItem mnemonicParsing="false" text="gcc -fwrapv" onAction="#codeGenerateOption2"/>
                             <MenuItem mnemonicParsing="false"/>
                         </items>
 
