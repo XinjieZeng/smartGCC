@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
@@ -17,7 +16,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.172-ea" fx:controller="sample.view.EditorPanelController">
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.view.EditorPanelController">
 
 
     <MenuBar nodeOrientation="LEFT_TO_RIGHT" prefHeight="600.0" prefWidth="400.0" stylesheets="view.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" BorderPane.alignment="CENTER">
@@ -31,19 +30,7 @@
                         </accelerator>
                     </MenuItem>
 
-                    <MenuItem mnemonicParsing="false" onAction="#handleOpenDirectory" text="Open Directory">
-                        <accelerator>
-                            <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                        </accelerator>
-                    </MenuItem>
-
-                    <MenuItem mnemonicParsing="false" text="Save">
-                        <accelerator>
-                            <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                        </accelerator>
-                    </MenuItem>
-
-                    <MenuItem mnemonicParsing="false" text="Save As..." />
+                    <MenuItem mnemonicParsing="false" text="Save As..." onAction="#saveFile"/>
                     <MenuItem mnemonicParsing="false" onAction="#handleExit" text="Exit" />
                 </items>
             </Menu>
@@ -65,13 +52,13 @@
 
                <Menu mnemonicParsing="false" text="Debugging">
                  <items>
-                          <MenuItem mnemonicParsing="false" onAction="#produceNativeDubuggingInfo" text="Debug -g">
+                          <MenuItem mnemonicParsing="false" onAction="#debugInNativeInfo" text="Debug -g">
                               <accelerator>
                                   <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                               </accelerator>
                           </MenuItem>
       
-                          <MenuItem mnemonicParsing="false" onAction="#produceDwarfDebuffingInfo" text="Debug -ggdb">
+                          <MenuItem mnemonicParsing="false" onAction="#debugInDwarfInfo" text="Debug -ggdb">
                               <accelerator>
                                   <KeyCodeCombination alt="UP" code="M" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                               </accelerator>
@@ -79,21 +66,20 @@
                  </items>
                </Menu>
                <SeparatorMenuItem mnemonicParsing="false" />
-               <Menu mnemonicParsing="false" text="Code Optimization" fx:id="codeOptimization">
+               <Menu fx:id="codeOptimization" mnemonicParsing="false" text="Code Optimization">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Level 1 Optimization" onAction="#optimizeLevelOne"/>
-                        <MenuItem mnemonicParsing="false" text="Level 2 Optimization" onAction="#optimizeLevelTWo"/>
-                        <MenuItem mnemonicParsing="false" text="Level 3 Optimization" onAction="#optimizeLevelThree"/>
+                        <MenuItem mnemonicParsing="false" onAction="#optimizeLevelOne" text="Level 1 Optimization" />
+                        <MenuItem mnemonicParsing="false" onAction="#optimizeLevelTWo" text="Level 2 Optimization" />
+                        <MenuItem mnemonicParsing="false" onAction="#optimizeLevelThree" text="Level 3 Optimization" />
                     </items>
 
 
                 </Menu>
 
-                    <Menu mnemonicParsing="false" text="Code Generation" fx:id="codeGeneration">
+                    <Menu fx:id="codeGeneration" mnemonicParsing="false" text="Code Generation">
                         <items>
-                            <MenuItem mnemonicParsing="false" text="gcc -ftrapv" onAction="#codeGenerateOption1"/>
-                            <MenuItem mnemonicParsing="false" text="gcc -fwrapv" onAction="#codeGenerateOption2"/>
-                            <MenuItem mnemonicParsing="false"/>
+                            <MenuItem mnemonicParsing="false" onAction="#genCodeFtrapv" text="gcc -ftrapv" />
+                            <MenuItem mnemonicParsing="false" onAction="#genCodeFwrapv" text="gcc -fwrapv" />
                         </items>
 
 
@@ -101,9 +87,9 @@
 
                <SeparatorMenuItem mnemonicParsing="false" />
 
-               <Menu mnemonicParsing="false" text="Code Developer" fx:id="codeDevelopment">
+               <Menu fx:id="codeDevelopment" mnemonicParsing="false" text="Code Developer">
                  <items>
-                   <MenuItem mnemonicParsing="false" text="Generate SRCFILE file" onAction="#generateSrcfice"/>
+                   <MenuItem mnemonicParsing="false" onAction="#generateSrcfice" text="Generate SRCFILE file" />
                  </items>
                </Menu>
 
@@ -112,8 +98,14 @@
 
 
             <Menu id="run" mnemonicParsing="false" text="Run">
+                <items>
+                    <MenuItem mnemonicParsing="false" text="Run Program" onAction="#run" />
+                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Stop">
+                <items>
+                    <MenuItem mnemonicParsing="false" text="Stop Program" onAction="#stop"/>
+                </items>
             </Menu>
 
             <Menu fx:id="commandHistory" mnemonicParsing="false" text="History">
@@ -139,10 +131,8 @@
         <items>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="background">
                 <children>
-                    <Label layoutX="39.0" layoutY="39.0" styleClass="label-header" text="File Lists" AnchorPane.leftAnchor="39.0" AnchorPane.topAnchor="39.0" />
-               <ListView fx:id="fileListView" accessibleRole="CHECK_BOX" layoutX="39.0" layoutY="56.0" prefHeight="200.0" prefWidth="154.0">
-               </ListView>
-               <TextArea layoutX="214.0" layoutY="56.0" prefHeight="298.0" prefWidth="543.0" />
+                    <Label fx:id="fileName" layoutX="29.0" layoutY="39.0" styleClass="label-header" text="Main.c" AnchorPane.leftAnchor="29.0" AnchorPane.topAnchor="39.0" />
+               <TextArea fx:id="editorArea" layoutX="29.0" layoutY="56.0" prefHeight="298.0" prefWidth="744.0" />
 
                 </children>
             </AnchorPane>

@@ -1,31 +1,34 @@
 package sample.view;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
-import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
+import javafx.util.Duration;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.PumpStreamHandler;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import sample.MainApp;
 import sample.model.CommandType;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FilenameFilter;
+
+import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 
 public class EditorPanelController {
     private MainApp mainApp;
-    private Stage dialogueStage;
-
+    private String path = "";
     private String result = "";
 
     @FXML
@@ -37,25 +40,86 @@ public class EditorPanelController {
     @FXML
     private MenuItem toolBox;
     @FXML
-    private ListView fileListView;
-    @FXML
     private AnchorPane outputWindow;
     @FXML
     private Text output;
     @FXML
     private Menu commandHistory;
+    @FXML
+    private TextArea editorArea;
+    @FXML
+    private Label fileName;
 
 
-    public void setDialogueStage(Stage dialogueStage) {
-        this.dialogueStage = dialogueStage;
-    }
 
     public EditorPanelController() {
     }
 
     @FXML
     private void initialize() {
-        fileListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+        Timeline timeline = new Timeline(new KeyFrame(
+                Duration.seconds(1),
+                ae -> autoSave()));
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+    }
+
+    private void autoSave(){
+
+        ObservableList<CharSequence> paragraph = editorArea.getParagraphs();
+        Iterator<CharSequence> iter = paragraph.iterator();
+
+        try {
+
+            File file;
+            if(path.isEmpty()){
+                file = new File("main.c");
+            }
+            else{
+                file = new File(path);
+            }
+
+            BufferedWriter bf = new BufferedWriter(new FileWriter(file));
+            while(iter.hasNext()) {
+                CharSequence seq = iter.next();
+                bf.append(seq);
+                bf.newLine();
+            }
+            bf.flush();
+            bf.close();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void saveFile(){
+        FileChooser fileChooser = new FileChooser();
+
+        // Set extension filter
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
+                "c files (*.c)", "*.c");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        // Show save file dialog
+        File file = fileChooser.showSaveDialog(mainApp.getPrimaryStage());
+
+        if (file != null) {
+            // Make sure it has the correct extension
+
+            Path newFilePath = Paths.get(file.getAbsolutePath());
+
+            try{
+                Files.createFile(newFilePath);
+                FileUtils.writeStringToFile(file, editorArea.getText(), Charset.defaultCharset());
+                result += "Successfully save " + file.getName() + " to " + newFilePath.toAbsolutePath().toString();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+        }
     }
 
     /**
@@ -64,7 +128,7 @@ public class EditorPanelController {
     @FXML
     private void handleOpen() {
         FileChooser fileChooser = new FileChooser();
-        List<String> extensions = Arrays.asList("*.c", "*.h");
+        List<String> extensions = Collections.singletonList("*.c");
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
                 " C files(*.c)", extensions);
         fileChooser.getExtensionFilters().add(extFilter);
@@ -72,67 +136,13 @@ public class EditorPanelController {
         // Show save file dialog
         File file = fileChooser.showOpenDialog(mainApp.getPrimaryStage());
 
-        String path = file.getAbsolutePath();
-
-
-        fileListView.getItems().add(file.getName() + " " + path);
-
-    }
-
-
-
-    @FXML
-    private void handleOpenDirectory() {
-
-        DirectoryChooser directoryChooser = new DirectoryChooser();
-        directoryChooser.setInitialDirectory(new File("/Users/xinjiezeng/Desktop"));
-
-        File selectedDirectory = directoryChooser.showDialog(mainApp.getPrimaryStage());
-
-        File[] files = selectedDirectory.listFiles(new FilenameFilter() {
-            public boolean accept(File dir, String name) {
-                return name.toLowerCase().endsWith(".c")
-                        || name.toLowerCase().endsWith(".cpp");
-            }
-        });
-
-        if (files != null) {
-            for (File file : files) {
-                fileListView.getItems().add(file.getName() + " " + file.getAbsolutePath());
-            }
-        }
-
-
-    }
-
-    /**
-     * execute the command from smartGCC interface on gcc compiler and return the output back to smartGCC
-     * @param command
-     * @param file
-     */
-    private void executeCommand(String command, String file) {
-
-        CommandLine commandLine = CommandLine.parse(command);
-        DefaultExecutor executor = new DefaultExecutor();
-        executor.setExitValue(0);
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        ByteArrayOutputStream errorOutputStream = new ByteArrayOutputStream();
-
-        executor.setStreamHandler(new PumpStreamHandler(byteArrayOutputStream, errorOutputStream));
-
-        try {
-            int value = executor.execute(commandLine);
-            System.out.println(byteArrayOutputStream.toString());
-            result += byteArrayOutputStream.toString() + "\n";
-            if (value == 0) {
-                result += "sucess! \n";
-            }
-
-            output.setText(result);
-        } catch (Exception e) {
-            result += "Error: \n" + errorOutputStream.toString();
-            output.setText(result);
-            System.out.println(errorOutputStream.toString());
+        path = file.getAbsolutePath();
+        fileName.setText(file.getName());
+        try{
+            String s = FileUtils.readFileToString(file, Charset.defaultCharset());
+            editorArea.appendText(s);
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 
@@ -151,26 +161,54 @@ public class EditorPanelController {
             }
         }
 
-        MenuItem menuItem = new MenuItem(commandType.toString());
-        //menuItem.setOnAction();
-
-        commandHistory.getItems().add(menuItem);
-
-
-        menuItem.setOnAction(e -> compileToExecutableFile());
-
-        if(commandHistory.getItems().size() >= 5){
-            commandHistory.getItems().get(0).setVisible(false);
-        }
+        addAction(commandType);
     }
 
-    private boolean isFileNotSelect(List<String> selectedFiles){
-        if(selectedFiles.isEmpty()){
-            result += "please open or select files before choosing commands";
-            output.setText(result);
-            return true;
+    private void addAction(CommandType commandType){
+        MenuItem menuItem = new MenuItem(commandType.toString());
+        commandHistory.getItems().add(menuItem);
+
+        switch (commandType){
+            case COMPILE_EXECUTABLE_COMMAND:
+                menuItem.setOnAction(e -> compileToExecutableFile());
+                break;
+            case COMPILE_OBJECT_COMMAND:
+                menuItem.setOnAction(e -> compileToObjectFile());
+                break;
+            case LINKING_COMMAND:
+                menuItem.setOnAction(e -> linkCFile());
+                break;
+            case DEBUG_G_COMMAND:
+                menuItem.setOnAction(e -> debugInNativeInfo());
+                break;
+            case DEBUG_GDBB_COMMAND:
+                menuItem.setOnAction(e -> debugInDwarfInfo());
+                break;
+            case CODE_GEN_FTRAPV:
+                menuItem.setOnAction(e -> genCodeFtrapv());
+                break;
+            case CODE_GEN_FWRAPV_COMMAND:
+                menuItem.setOnAction(e -> genCodeFwrapv());
+                break;
+            case OPTIMIZE_LEVEL1_COMMAND:
+                menuItem.setOnAction(e -> optimizeLevelOne());
+                break;
+            case OPTIMIZE_LEVEL2_COMMAND:
+                menuItem.setOnAction(e -> optimizeLevelTWo());
+                break;
+            case OPTIMIZE_LEVEL3_COMMAND:
+                menuItem.setOnAction(e -> optimizeLevelThree());
+                break;
+            case DEVELOPER_OPTIMIZATION_COMMAND:
+                menuItem.setOnAction(e -> generateSrcfice());
+                break;
+            case RUN_COMMAND:
+                menuItem.setOnAction(e -> run());
+                break;
+            case STOP_COMMAND:
+                menuItem.setOnAction(e -> stop());
+                break;
         }
-        return false;
     }
 
     /**
@@ -180,18 +218,16 @@ public class EditorPanelController {
      * compile c file to executable file
      */
     @FXML
-    private void compileToExecutableFile(){
+     void compileToExecutableFile(){
+        String command = CommandType.COMPILE_TO_EXECUTABLE.toString();
 
-        List<String> selectedFiles = fileListView.getSelectionModel().getSelectedItems();
-
-        if(isFileNotSelect(selectedFiles)){
+        if(path.isEmpty()){
+            executeFile("main.c", command, CommandType.COMPILE_EXECUTABLE_COMMAND);
             return;
         }
 
-        String command = CommandType.COMPILE_TO_EXECUTABLE.toString();
-        executeFiles(selectedFiles, command, CommandType.COMPILE_EXECUTABLE_COMMAND);
+        executeFile(path, command,CommandType.COMPILE_EXECUTABLE_COMMAND);
     }
-
 
     /**
      * gcc compile option2
@@ -199,17 +235,86 @@ public class EditorPanelController {
      * gcc -E hello.c -o hello.o
      */
     @FXML
-    private void compileToObjectFile(){
-        List<String> selectedFiles = fileListView.getSelectionModel().getSelectedItems();
+    void compileToObjectFile(){
 
-        if(isFileNotSelect(selectedFiles)){
+        String command = CommandType.COMPILE_TO_OBJECT_FILE.toString();
+
+        if(path.isEmpty()){
+            executeFile("main.c", command, CommandType.COMPILE_OBJECT_COMMAND);
             return;
         }
 
-
-        String command = CommandType.COMPILE_TO_OBJECT_FILE.toString();
-        executeFiles(selectedFiles, command, CommandType.COMPILE_OBJECT_COMMAND);
+        executeFile(path, command,CommandType.COMPILE_OBJECT_COMMAND);
     }
+
+    /**
+     * execute the command from smartGCC interface on gcc compiler and return the output back to smartGCC
+     * @param command
+     * @param file
+     */
+    private void executeCommand(String command, String file, CommandType commandType) {
+
+        CommandLine commandLine = CommandLine.parse(command);
+        DefaultExecutor executor = new DefaultExecutor();
+        executor.setExitValue(0);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        ByteArrayOutputStream errorOutputStream = new ByteArrayOutputStream();
+
+        executor.setStreamHandler(new PumpStreamHandler(byteArrayOutputStream, errorOutputStream));
+
+        try {
+            int value = executor.execute(commandLine);
+            System.out.println(byteArrayOutputStream.toString());
+            result += byteArrayOutputStream.toString() + "\n";
+            if (value == 0) {
+                result += file + ": successfully implements " + commandType.toString() + "\n";
+            }
+
+            output.setText(result);
+        } catch (Exception e) {
+            result += "Error: \n" + errorOutputStream.toString();
+            output.setText(result);
+            System.out.println(errorOutputStream.toString());
+        }
+    }
+
+    private void executeFile(String path, String command, CommandType commandType){
+
+        if(commandType == CommandType.COMPILE_OBJECT_COMMAND){
+            String fileName = Paths.get(path).getFileName().toString();
+            command = constructCommand(command, fileName);
+            executeCommand(command, fileName.toString(), commandType);
+            addCommandHistory(CommandType.COMPILE_OBJECT_COMMAND);
+            return;
+        }
+
+        String fileName = Paths.get(path).getFileName().toString();
+        command = constructCommand(command, fileName);
+        executeCommand(command, fileName, commandType);
+        addCommandHistory(commandType);
+
+    }
+
+    private String constructCommand(String command, String fileName){
+
+        Path sourceFilePath;
+        Path destFilePath;
+
+        if(path.isEmpty()){
+            sourceFilePath = Paths.get(fileName);
+            destFilePath = Paths.get(FilenameUtils.removeExtension(fileName));
+        }else{
+            sourceFilePath = Paths.get(path);
+            destFilePath = Paths.get(sourceFilePath.getParent().toString(), FilenameUtils.removeExtension(fileName));
+
+        }
+
+        command += sourceFilePath + " -o " + destFilePath;
+
+        return command;
+    }
+
+
 
     /**
      * gcc link option
@@ -221,10 +326,15 @@ public class EditorPanelController {
      *
      */
     @FXML
-    private void linkCFile(){
-        List<String> selectedFiles = fileListView.getSelectionModel().getSelectedItems();
+    void linkCFile(){
         String command = CommandType.LINK_C.toString();
-        executeFiles(selectedFiles, command, CommandType.LINK_C);
+
+        if(path.isEmpty()){
+            executeFile("main.c", command, CommandType.LINKING_COMMAND);
+            return;
+        }
+
+        executeFile(path, command,CommandType.LINKING_COMMAND);
     }
 
     /**
@@ -241,10 +351,16 @@ public class EditorPanelController {
      * gcc -g hello.c -o hello
      */
     @FXML
-    private void produceNativeDubuggingInfo(){
-        List<String> selectedFiles = fileListView.getSelectionModel().getSelectedItems();
+    void debugInNativeInfo(){
+
         String command = CommandType.DEBUG_G.toString();
-        executeFiles(selectedFiles, command, CommandType.DEBUG_G_COMMAND);
+
+        if(path.isEmpty()){
+            executeFile("main.c", command, CommandType.DEBUG_G_COMMAND);
+            return;
+        }
+
+        executeFile(path, command,CommandType.DEBUG_G_COMMAND);
     }
 
     /**
@@ -257,10 +373,15 @@ public class EditorPanelController {
      * gcc -ggdb hello.c -o hello
      */
     @FXML
-    private void produceDwarfDebuffingInfo(){
-        List<String> selectedFiles = fileListView.getSelectionModel().getSelectedItems();
+    void debugInDwarfInfo(){
         String command = CommandType.DEBUG_GGDB.toString();
-        executeFiles(selectedFiles, command, CommandType.DEBUG_GGDB);
+
+        if(path.isEmpty()){
+            executeFile("main.c", command, CommandType.DEBUG_GDBB_COMMAND);
+            return;
+        }
+
+        executeFile(path, command,CommandType.DEBUG_GDBB_COMMAND);
     }
 
     /**
@@ -272,11 +393,15 @@ public class EditorPanelController {
      * and generate object file.
      */
     @FXML
-    private void optimizeLevelTWo(){
-        List<String> selectedFiles = fileListView.getSelectionModel().getSelectedItems();
+    void optimizeLevelTWo(){
         String command = CommandType.OPTIMIZE_C_LEVEL2.toString();
 
-        executeFiles(selectedFiles, command, CommandType.OPTIMIZE_LEVEL2_COMMAND);
+        if(path.isEmpty()){
+            executeFile("main.c", command, CommandType.OPTIMIZE_LEVEL2_COMMAND);
+            return;
+        }
+
+        executeFile(path, command,CommandType.OPTIMIZE_LEVEL2_COMMAND);
     }
 
     /**
@@ -289,11 +414,15 @@ public class EditorPanelController {
      * and generate object file.
      */
     @FXML
-    private void optimizeLevelOne(){
-        List<String> selectedFiles = fileListView.getSelectionModel().getSelectedItems();
+    void optimizeLevelOne(){
         String command = CommandType.OPTIMIZE_C_LEVEL1.toString();
 
-        executeFiles(selectedFiles, command, CommandType.OPTIMIZE_LEVEL1_COMMAND);
+        if(path.isEmpty()){
+            executeFile("main.c", command, CommandType.OPTIMIZE_LEVEL1_COMMAND);
+            return;
+        }
+
+        executeFile(path, command,CommandType.OPTIMIZE_LEVEL1_COMMAND);
     }
 
 
@@ -305,11 +434,15 @@ public class EditorPanelController {
      * and generate the object file
      */
     @FXML
-    private void optimizeLevelThree(){
-        List<String> selectedFiles = fileListView.getSelectionModel().getSelectedItems();
+    void optimizeLevelThree(){
         String command = CommandType.OPTIMIZE_C_LEVEL3.toString();
 
-        executeFiles(selectedFiles, command, CommandType.OPTIMIZE_LEVEL3_COMMAND);
+        if(path.isEmpty()){
+            executeFile("main.c", command, CommandType.OPTIMIZE_LEVEL3_COMMAND);
+            return;
+        }
+
+        executeFile(path, command,CommandType.OPTIMIZE_LEVEL3_COMMAND);
     }
 
     /**
@@ -319,11 +452,16 @@ public class EditorPanelController {
      * Note that only active options override, so using -ftrapv -fwrapv -fno-wrapv on the command-line results in -ftrapv being effective.
      */
     @FXML
-    private void codeGenerateOption1(){
-        List<String> selectedFiles = fileListView.getSelectionModel().getSelectedItems();
-        String command = CommandType.CODE_GEN1_COMMAND.toString();
+    void genCodeFtrapv(){
 
-        executeFiles(selectedFiles, command, CommandType.CODE_GEN1_COMMAND);
+        String command = CommandType.CODE_GEN_FTRAPV.toString();
+
+        if(path.isEmpty()){
+            executeFile("main.c", command, CommandType.CODE_GEN_FTRAPV_COMMAND);
+            return;
+        }
+
+        executeFile(path, command,CommandType.CODE_GEN_FTRAPV_COMMAND);
     }
 
     /**
@@ -333,11 +471,15 @@ public class EditorPanelController {
      * Note that only active options override, so using -ftrapv -fwrapv -fno-wrapv on the command-line results in -ftrapv being effective.
      */
     @FXML
-    private void codeGenerateOption2(){
-        List<String> selectedFiles = fileListView.getSelectionModel().getSelectedItems();
-        String command = CommandType.CODE_GEN2_COMMAND.toString();
+    void genCodeFwrapv(){
+        String command = CommandType.CODE_GEN_FWRAPV.toString();
 
-        executeFiles(selectedFiles, command, CommandType.CODE_GEN2_COMMAND);
+        if(path.isEmpty()){
+            executeFile("main.c", command, CommandType.CODE_GEN_FTRAPV_COMMAND);
+            return;
+        }
+
+        executeFile(path, command,CommandType.CODE_GEN_FTRAPV_COMMAND);
     }
 
 
@@ -349,42 +491,16 @@ public class EditorPanelController {
      * gcc  -fsave-optimization-record hello.c
      */
     @FXML
-    private void generateSrcfice(){
-        List<String> selectedFiles = fileListView.getSelectionModel().getSelectedItems();
+    void generateSrcfice(){
         String command = CommandType.DEVELOPER_OPTIMIZATION.toString();
-        executeFiles(selectedFiles, command, CommandType.DEVELOPER_OPTIMIZATION_COMMAND);
-    }
 
-
-
-    private void executeFiles(List<String> selectedFiles, String command, CommandType commandType){
-
-        if(commandType == CommandType.COMPILE_OBJECT_COMMAND){
-            for(String file: selectedFiles) {
-                String fileName = file.split(" ")[0];
-                command = constructCommand(command, file, fileName) + ".o";
-                executeCommand(command, fileName);
-                addCommandHistory(commandType);
-            }
+        if(path.isEmpty()){
+            executeFile("main.c", command, CommandType.DEVELOPER_OPTIMIZATION_COMMAND);
+            return;
         }
 
-        for(String file: selectedFiles) {
-            String fileName = file.split(" ")[0];
-            command = constructCommand(command, file, fileName);
-            executeCommand(command, fileName);
-            addCommandHistory(commandType);
-        }
+        executeFile(path, command,CommandType.DEVELOPER_OPTIMIZATION_COMMAND);
     }
-
-
-    private String constructCommand(String command, String item, String fileName) {
-        Path sourceFilePath = Paths.get(item.split(" ")[1]);
-        Path destFilePath = Paths.get(sourceFilePath.getParent().toString() , FilenameUtils.removeExtension(fileName));
-
-        command += sourceFilePath + " -o " + destFilePath;
-        return command;
-    }
-
 
     /**
      * exit the program
@@ -395,12 +511,18 @@ public class EditorPanelController {
     }
 
 
-
-
     @FXML
     private void run(){
+        compileToExecutableFile();
 
+        String fileName = Paths.get(path).getFileName().toString();
+        Path filePath = Paths.get(path);
+        String command = Paths.get(filePath.getParent().toString(), FilenameUtils.removeExtension(fileName)).toString();
+        executeCommand(command, fileName, CommandType.RUN_COMMAND);
     }
+
+    @FXML
+    private void stop(){}
 
     public void setMainApp(MainApp mainApp){
         this.mainApp = mainApp;
