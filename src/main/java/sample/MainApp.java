@@ -1,25 +1,17 @@
 package sample;
 
 import javafx.application.Application;
-import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Duration;
+import org.apache.commons.io.FileUtils;
 import sample.model.UserType;
-import sample.view.EditorPanelController;
-import sample.view.IdleMonitor;
-import sample.view.ToolBoxPanelController;
-import sample.view.UserSwitchDialogueController;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Unmarshaller;
+import sample.view.*;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 public class MainApp extends Application {
 
@@ -27,14 +19,47 @@ public class MainApp extends Application {
     private AnchorPane rootLayout;
     private EditorPanelController editorPanelController;
 
+
     public MainApp(){}
 
     @Override
     public void start(Stage primaryStage) throws Exception{
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("SmartGCC");
+
         switchUserDialogue();
     }
+
+//    private void readUserSelection(){
+//        File file = new File("userChoice.txt");
+//
+//        try{
+//            file.canExecute();
+//            String res = FileUtils.readFileToString(file);
+//            if(res.isEmpty()){
+//                isRemberUserType = false;
+//            }
+//
+//            if(res.equalsIgnoreCase(UserType.NOVICE.toString())){
+//                userType = UserType.NOVICE;
+//            }
+//            else if(res.equalsIgnoreCase(UserType.TYPICAL.toString())){
+//                userType = UserType.TYPICAL;
+//            }
+//            else if(res.equalsIgnoreCase(UserType.EXPERT.toString())){
+//                userType = UserType.EXPERT;
+//            }
+//            else{
+//                userType = UserType.NOVICE;
+//            }
+//
+//            isRemberUserType = true;
+//        }
+//        catch (Exception e){
+//            e.printStackTrace();
+//        }
+//
+//    }
 
     public void initRootLayout(UserType userType){
         try {
@@ -111,6 +136,36 @@ public class MainApp extends Application {
         }
     }
 
+    public void switchHelpBoxDialogue(){
+        try{
+            // Load the fxml file and create a new stage for the popup dialog.
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getClassLoader().getResource("HelpPanel.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+
+            // Create the dialog Stage.
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Help");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            // Set the person into the controller.
+            HelpPanelController controller = loader.getController();
+            controller.setDialogueStage(dialogStage);
+            controller.setMainApp(this);
+
+            // Set the dialog icon.
+
+            // Show the dialog and wait until the user closes it
+            dialogStage.showAndWait();
+
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
 
 
     public void switchToolboxDialogue() {
@@ -144,6 +199,19 @@ public class MainApp extends Application {
         }
 
     }
+
+//    public void rememberUserChoice(UserType userType){
+//        File file = new File("userChoice.txt");
+//        isRemberUserType = true;
+//
+//        try {
+//           FileUtils.write(file, userType.toString(), StandardCharsets.UTF_8);
+//        }
+//        catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
 
 
     public Stage getPrimaryStage(){

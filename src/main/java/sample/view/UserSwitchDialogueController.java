@@ -1,11 +1,12 @@
 package sample.view;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import sample.MainApp;
 import sample.model.UserType;
+import sample.utils.UIUtils;
 
 public class UserSwitchDialogueController {
     private Stage dialogStage;
@@ -14,8 +15,11 @@ public class UserSwitchDialogueController {
     private MainApp mainApp;
 
     @FXML
-    ToggleGroup toggleGroup;
-
+    private ImageView userTypeTip;
+    @FXML
+    private ToggleGroup toggleGroup;
+    @FXML
+    private CheckBox rememberUserType;
 
 
     public void setMainApp(MainApp mainApp){
@@ -23,11 +27,24 @@ public class UserSwitchDialogueController {
     }
 
     @FXML
-    private void initialize(){}
+    private void initialize(){
+        Tooltip.install(userTypeTip, UIUtils.withDelay(new Tooltip("test"),100));
+
+    }
+
+//    @FXML
+//    private void rememberUserChoice(){
+//        boolean isRemeberUserChoice = rememberUserType.isSelected();
+//
+//        if(isRemeberUserChoice){
+//            mainApp.rememberUserChoice(userType);
+//        }
+//    }
 
     public void setDialogStage(Stage dialogStage){
         this.dialogStage = dialogStage;
     }
+
 
     @FXML
     public void handleCancel(){
