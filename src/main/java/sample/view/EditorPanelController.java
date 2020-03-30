@@ -283,7 +283,7 @@ public class EditorPanelController {
         if(commandType == CommandType.COMPILE_OBJECT_COMMAND){
             String fileName = Paths.get(path).getFileName().toString();
             command = constructCommand(command, fileName);
-            executeCommand(command, fileName.toString(), commandType);
+            executeCommand(command, fileName, commandType);
             addCommandHistory(CommandType.COMPILE_OBJECT_COMMAND);
             return;
         }
@@ -515,6 +515,13 @@ public class EditorPanelController {
     private void run(){
         compileToExecutableFile();
 
+        if(path.isEmpty()){
+            String fileName = "main";
+            String command = CommandType.RUN + fileName;
+            executeCommand(command, fileName, CommandType.RUN_COMMAND);
+            return;
+        }
+
         String fileName = Paths.get(path).getFileName().toString();
         Path filePath = Paths.get(path);
         String command = Paths.get(filePath.getParent().toString(), FilenameUtils.removeExtension(fileName)).toString();
@@ -553,6 +560,10 @@ public class EditorPanelController {
     }
     public void showToolBoxDialogue(){
         mainApp.switchToolboxDialogue();
+    }
+
+    public void showHelpDialogue(){
+        mainApp.switchHelpBoxDialogue();
     }
 
 }

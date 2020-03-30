@@ -122,8 +122,14 @@
             <Menu mnemonicParsing="false" onAction="#showToolBoxDialogue" text="ToolBox">
             <items>
                <MenuItem fx:id="toolBox" mnemonicParsing="false" text="All available options" />
-            </items></Menu>
-            <Menu id="help" mnemonicParsing="false" text="Help" />
+            </items>
+            </Menu>
+
+            <Menu mnemonicParsing="false" text="Help" onAction="#showHelpDialogue">
+                <items>
+                    <MenuItem fx:id="help" mnemonicParsing="false" text="Help ?" />
+                </items>
+            </Menu>
         </menus>
     </MenuBar>
 
