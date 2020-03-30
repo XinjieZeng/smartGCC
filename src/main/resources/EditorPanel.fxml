@@ -30,8 +30,16 @@
                         </accelerator>
                     </MenuItem>
 
-                    <MenuItem mnemonicParsing="false" text="Save As..." onAction="#saveFile"/>
-                    <MenuItem mnemonicParsing="false" onAction="#handleExit" text="Exit" />
+                    <MenuItem mnemonicParsing="false" onAction="#saveFile" text="Save As...">
+                        <accelerator>
+                            <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                        </accelerator>
+                    </MenuItem>
+                    <MenuItem mnemonicParsing="false" onAction="#handleExit" text="Exit">
+                        <accelerator>
+                            <KeyCodeCombination alt="UP" code="Q" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                        </accelerator>
+                    </MenuItem>
                 </items>
             </Menu>
 
@@ -53,15 +61,9 @@
                <Menu mnemonicParsing="false" text="Debugging">
                  <items>
                           <MenuItem mnemonicParsing="false" onAction="#debugInNativeInfo" text="Debug -g">
-                              <accelerator>
-                                  <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                              </accelerator>
                           </MenuItem>
       
                           <MenuItem mnemonicParsing="false" onAction="#debugInDwarfInfo" text="Debug -ggdb">
-                              <accelerator>
-                                  <KeyCodeCombination alt="UP" code="M" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                              </accelerator>
                           </MenuItem>
                  </items>
                </Menu>
@@ -99,12 +101,16 @@
 
             <Menu id="run" mnemonicParsing="false" text="Run">
                 <items>
-                    <MenuItem mnemonicParsing="false" text="Run Program" onAction="#run" />
+                    <MenuItem mnemonicParsing="false" onAction="#run" text="Run Program">
+                        <accelerator>
+                            <KeyCodeCombination alt="UP" code="F11" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                        </accelerator>
+                    </MenuItem>
                 </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Stop">
                 <items>
-                    <MenuItem mnemonicParsing="false" text="Stop Program" onAction="#stop"/>
+                    <MenuItem mnemonicParsing="false" onAction="#stop" text="Stop Program" />
                 </items>
             </Menu>
 
@@ -125,7 +131,7 @@
             </items>
             </Menu>
 
-            <Menu mnemonicParsing="false" text="Help" onAction="#showHelpDialogue">
+            <Menu mnemonicParsing="false" onAction="#showHelpDialogue" text="Help">
                 <items>
                     <MenuItem fx:id="help" mnemonicParsing="false" text="Help ?" />
                 </items>
@@ -147,7 +153,7 @@
                     <Label layoutX="26.0" layoutY="6.0" styleClass="label-header" text="Output" AnchorPane.leftAnchor="26.0" AnchorPane.topAnchor="6.0" />
                <ImageView fitHeight="17.0" fitWidth="23.0" layoutX="5.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
                   <image>
-                     <Image url="@run.png" />
+                     <Image url="@terminal2.png" />
                   </image>
                </ImageView>
 

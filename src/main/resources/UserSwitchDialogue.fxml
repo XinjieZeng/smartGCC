@@ -29,11 +29,14 @@
         <RadioButton mnemonicParsing="false" text="typical" toggleGroup="$toggleGroup" GridPane.columnIndex="1" GridPane.rowIndex="2" />
         <RadioButton mnemonicParsing="false" text="expert" toggleGroup="$toggleGroup" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
-        <Text text="Remember Setting?" wrappingWidth="123.529296875" GridPane.columnIndex="1" GridPane.rowIndex="6">
-         <GridPane.margin>
-            <Insets left="30.0" />
-         </GridPane.margin></Text>
-        <CheckBox fx:id="rememberUserType"  mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+
+            <Text text="Remember Setting?" fx:id="rememberUserText" wrappingWidth="123.529296875" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                <GridPane.margin>
+                    <Insets left="30.0" />
+                </GridPane.margin></Text>
+            <CheckBox fx:id="rememberUserType" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+
+
         <columnConstraints>
          <ColumnConstraints />
          <ColumnConstraints />

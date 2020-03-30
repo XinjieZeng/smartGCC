@@ -11,13 +11,14 @@ import sample.model.UserType;
 import sample.view.*;
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
 public class MainApp extends Application {
 
     private Stage primaryStage;
     private AnchorPane rootLayout;
     private EditorPanelController editorPanelController;
+    private UserType userType;
+    private boolean showRememberUserChoice = true;
 
 
     public MainApp(){}
@@ -27,56 +28,58 @@ public class MainApp extends Application {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("SmartGCC");
 
+        readUserSelection();
+        if(userType != null){
+            initRootLayout(userType);
+            return;
+        }
         switchUserDialogue();
     }
 
-//    private void readUserSelection(){
-//        File file = new File("userChoice.txt");
-//
-//        try{
-//            file.canExecute();
-//            String res = FileUtils.readFileToString(file);
-//            if(res.isEmpty()){
-//                isRemberUserType = false;
-//            }
-//
-//            if(res.equalsIgnoreCase(UserType.NOVICE.toString())){
-//                userType = UserType.NOVICE;
-//            }
-//            else if(res.equalsIgnoreCase(UserType.TYPICAL.toString())){
-//                userType = UserType.TYPICAL;
-//            }
-//            else if(res.equalsIgnoreCase(UserType.EXPERT.toString())){
-//                userType = UserType.EXPERT;
-//            }
-//            else{
-//                userType = UserType.NOVICE;
-//            }
-//
-//            isRemberUserType = true;
-//        }
-//        catch (Exception e){
-//            e.printStackTrace();
-//        }
-//
-//    }
+    private void readUserSelection(){
+        File file = new File("userChoice.txt");
+
+        try{
+            String res = FileUtils.readFileToString(file);
+
+            if(res.isEmpty()){
+                return;
+            }
+
+            if(res.split(" ")[0].equalsIgnoreCase("true")){
+                showRememberUserChoice = false;
+            }
+
+            if(res.split(" ")[1].equalsIgnoreCase(UserType.NOVICE.toString())){
+                userType = UserType.NOVICE;
+            }
+            else if(res.split(" ")[1].equalsIgnoreCase(UserType.TYPICAL.toString())){
+                userType = UserType.TYPICAL;
+            }
+            else if(res.split(" ")[1].equalsIgnoreCase(UserType.EXPERT.toString())){
+                userType = UserType.EXPERT;
+            }
+            else{
+                userType = UserType.NOVICE;
+            }
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
 
     public void initRootLayout(UserType userType){
         try {
 
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getClassLoader().getResource("EditorPanel.fxml"));
-//            loader.setLocation(getClass(),"/sample.view/EditorPanel.fxml");
-//                    .getResource("/sample.view/EditorPanel.fxml"));
             rootLayout = (AnchorPane) loader.load();
 
             // Show the scene containing the root layout.
             Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
-
-
-
-
 
             // Give the controller access to the main app.
             editorPanelController = loader.getController();
@@ -125,9 +128,10 @@ public class MainApp extends Application {
             controller.setDialogStage(dialogStage);
             controller.setMainApp(this);
 
-            // Set the dialog icon.
+            if(!showRememberUserChoice){
+                controller.disableRememberSetting();
+            }
 
-            // Show the dialog and wait until the user closes it
             dialogStage.showAndWait();
 
         } catch (IOException e) {
@@ -199,19 +203,6 @@ public class MainApp extends Application {
         }
 
     }
-
-//    public void rememberUserChoice(UserType userType){
-//        File file = new File("userChoice.txt");
-//        isRemberUserType = true;
-//
-//        try {
-//           FileUtils.write(file, userType.toString(), StandardCharsets.UTF_8);
-//        }
-//        catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//    }
 
 
     public Stage getPrimaryStage(){
