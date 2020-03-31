@@ -1,6 +1,7 @@
 package smartgcc.view.controller;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
@@ -11,17 +12,29 @@ public class ToolBoxPanelController {
     private EditorPanelController controller;
 
     @FXML
-    ToggleGroup compileToggleGroup;
+    CheckBox compile_executable;
     @FXML
-    ToggleGroup linkToggleGroup;
+    CheckBox compile_object;
     @FXML
-    ToggleGroup debugToggleGroup;
+    CheckBox link_shared;
     @FXML
-    ToggleGroup genCodeToggleGroup;
+    CheckBox debug_g;
     @FXML
-    ToggleGroup optimizeToggleGroup;
+    CheckBox debug_gdbb;
     @FXML
-    ToggleGroup developerToggleGroup;
+    CheckBox gen_ftrapv;
+    @FXML
+    CheckBox gen_fwrapv;
+
+    @FXML
+    CheckBox optimize_1;
+    @FXML
+    CheckBox optimize_2;
+    @FXML
+    CheckBox optimize_3;
+    @FXML
+    CheckBox developer_fsave_optimization_record;
+
 
     public ToolBoxPanelController(){}
 
@@ -45,95 +58,57 @@ public class ToolBoxPanelController {
     }
 
     private void executeCompileCommand(){
-        RadioButton selectedRadioButton = (RadioButton) compileToggleGroup.getSelectedToggle();
-
-        if(selectedRadioButton == null){
-            return;
-        }
-
-        String toggleGroupValue = selectedRadioButton.getText();
-
-        if(toggleGroupValue.equalsIgnoreCase(CommandType.COMPILE_EXECUTABLE_COMMAND.toString())){
+        if(compile_executable.isSelected()){
             controller.compileToExecutableFile();
         }
-        else if(toggleGroupValue.equalsIgnoreCase(CommandType.COMPILE_OBJECT_COMMAND.toString())){
+        if(compile_object.isSelected()){
             controller.compileToObjectFile();
         }
     }
 
     private void executeLinkCommand(){
-        RadioButton selectedRadioButton = (RadioButton) linkToggleGroup.getSelectedToggle();
-
-        if(selectedRadioButton == null){
-            return;
-        }
-        String toggleGroupValue = selectedRadioButton.getText();
-
-        if(toggleGroupValue.equalsIgnoreCase(CommandType.LINKING_COMMAND.toString())){
+        if(link_shared.isSelected()){
             controller.linkCFile();
         }
     }
 
     private void executeDebugCommand(){
-        RadioButton selectedRadioButton = (RadioButton) debugToggleGroup.getSelectedToggle();
-
-        if(selectedRadioButton == null){
-            return;
-        }
-        String toggleGroupValue = selectedRadioButton.getText();
-
-        if(toggleGroupValue.equalsIgnoreCase(CommandType.DEBUG_G_COMMAND.toString())){
+        if(debug_g.isSelected()){
             controller.debugInNativeInfo();
         }
-        else if(toggleGroupValue.equalsIgnoreCase(CommandType.DEBUG_GDBB_COMMAND.toString())){
+
+        if(debug_gdbb.isSelected()){
             controller.debugInDwarfInfo();
         }
     }
 
     private void executeGenCodeCommand(){
-        RadioButton selectedRadioButton = (RadioButton) genCodeToggleGroup.getSelectedToggle();
-
-        if(selectedRadioButton == null){
-            return;
-        }
-
-        String toggleGroupValue = selectedRadioButton.getText();
-
-        if(toggleGroupValue.equalsIgnoreCase(CommandType.CODE_GEN_FWRAPV_COMMAND.toString())){
+        if(gen_ftrapv.isSelected()){
             controller.genCodeFtrapv();
         }
-        else if(toggleGroupValue.equalsIgnoreCase(CommandType.CODE_GEN_FTRAPV_COMMAND.toString())){
+
+        if(gen_fwrapv.isSelected()){
             controller.genCodeFwrapv();
         }
     }
 
     private void executeOptimizeCodeCommand(){
-        RadioButton selectedRadioButton = (RadioButton) optimizeToggleGroup.getSelectedToggle();
-        if(selectedRadioButton == null){
-            return;
-        }
-        String toggleGroupValue = selectedRadioButton.getText();
 
-        if(toggleGroupValue.equalsIgnoreCase(CommandType.OPTIMIZE_LEVEL1_COMMAND.toString())){
+        if(optimize_1.isSelected()){
             controller.optimizeLevelOne();
         }
-        else if(toggleGroupValue.equalsIgnoreCase(CommandType.OPTIMIZE_LEVEL2_COMMAND.toString())){
+
+        if(optimize_2.isSelected()){
             controller.optimizeLevelTWo();
         }
-        else if(toggleGroupValue.equalsIgnoreCase(CommandType.OPTIMIZE_LEVEL3_COMMAND.toString())){
+
+        if(optimize_3.isSelected()){
             controller.optimizeLevelThree();
         }
     }
 
     private void executeDeveloperCommand(){
-        RadioButton selectedRadioButton = (RadioButton) developerToggleGroup.getSelectedToggle();
-
-        if(selectedRadioButton == null){
-            return;
-        }
-        String toggleGroupValue = selectedRadioButton.getText();
-
-        if(toggleGroupValue.equalsIgnoreCase(CommandType.DEVELOPER_OPTIMIZATION_COMMAND.toString())){
+        if(developer_fsave_optimization_record.isSelected()){
             controller.generateSrcfice();
         }
     }

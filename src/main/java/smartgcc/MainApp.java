@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+import static smartgcc.model.Layout.SWITCH_USER_PANEL;
 import static smartgcc.model.UserType.*;
 
 public class MainApp extends Application {
@@ -40,6 +41,9 @@ public class MainApp extends Application {
             return;
         }
         switchUserDialogue();
+
+        userType = readUserSelection();
+        initRootLayout(userType);
     }
 
     private UserType readUserSelection() {
@@ -90,7 +94,7 @@ public class MainApp extends Application {
         try {
 
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getClassLoader().getResource("layout/UserSwitchDialogue.fxml"));
+            loader.setLocation(MainApp.class.getClassLoader().getResource(SWITCH_USER_PANEL.getPath()));
             AnchorPane page = loader.load();
 
             Stage dialogStage = new Stage();
