@@ -3,13 +3,9 @@ package smartgcc.view.controller;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -20,10 +16,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import smartgcc.MainApp;
 import smartgcc.model.CommandType;
-import smartgcc.model.Layout;
 import smartgcc.model.UserType;
 import smartgcc.utils.UIUtils;
-
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -44,13 +38,10 @@ public class EditorPanelController {
 
     @FXML
     private MenuItem codeGeneration;
-
     @FXML
     private MenuItem codeOptimization;
     @FXML
     private MenuItem codeDevelopment;
-    @FXML
-    private MenuItem toolBox;
     @FXML
     private TextArea output;
     @FXML
@@ -71,7 +62,10 @@ public class EditorPanelController {
                 ae -> autoSave()));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
+
+
     }
+
 
     private void autoSave(){
         ObservableList<CharSequence> paragraph = editorArea.getParagraphs();
@@ -211,48 +205,13 @@ public class EditorPanelController {
         }
     }
 
-    /**
-     * gcc compile option1
-     * gcc hello.c -o hello
-     * one step compilation
-     * compile c file to executable file
-     */
-    @FXML
-     void compileToExecutableFile(){
-        String command = CommandType.COMPILE_TO_EXECUTABLE.toString();
-
-        if(path.isEmpty()){
-            executeFile("main.c", command, CommandType.COMPILE_EXECUTABLE_COMMAND);
-            return;
-        }
-
-        executeFile(path, command,CommandType.COMPILE_EXECUTABLE_COMMAND);
-    }
-
-    /**
-     * gcc compile option2
-     * compile c file to object file
-     * gcc -E hello.c -o hello.o
-     */
-    @FXML
-    void compileToObjectFile(){
-
-        String command = CommandType.COMPILE_TO_OBJECT_FILE.toString();
-
-        if(path.isEmpty()){
-            executeFile("main.c", command, CommandType.COMPILE_OBJECT_COMMAND);
-            return;
-        }
-
-        executeFile(path, command,CommandType.COMPILE_OBJECT_COMMAND);
-    }
 
     /**
      * execute the command from smartGCC interface on gcc compiler and return the output back to smartGCC
      * @param command
      * @param file
      */
-    private void executeCommand(String command, String file, CommandType commandType) {
+    private boolean executeCommand(String command, String file, CommandType commandType) {
 
         CommandLine commandLine = CommandLine.parse(command);
         DefaultExecutor executor = new DefaultExecutor();
@@ -272,23 +231,26 @@ public class EditorPanelController {
         } catch (Exception e) {
             output.appendText("Error: \n" + errorOutputStream.toString());
             System.out.println(errorOutputStream.toString());
+            return false;
         }
+
+        return true;
     }
 
-    private void executeFile(String path, String command, CommandType commandType){
+    private boolean executeFile(String path, String command, CommandType commandType){
 
         if(commandType == CommandType.COMPILE_OBJECT_COMMAND){
             String fileName = Paths.get(path).getFileName().toString();
             command = constructCommand(command, fileName);
-            executeCommand(command, fileName, commandType);
             addCommandHistory(CommandType.COMPILE_OBJECT_COMMAND);
-            return;
+            return executeCommand(command, fileName, commandType);
         }
 
         String fileName = Paths.get(path).getFileName().toString();
         command = constructCommand(command, fileName);
-        executeCommand(command, fileName, commandType);
         addCommandHistory(commandType);
+        return executeCommand(command, fileName, commandType);
+
 
     }
 
@@ -311,11 +273,46 @@ public class EditorPanelController {
         return command;
     }
 
+    /**
+     * gcc compile option1
+     * gcc hello.c -o hello
+     * one step compilation
+     * compile c file to executable file
+     */
+    @FXML
+    boolean compileToExecutableFile(){
+        String command = CommandType.COMPILE_TO_EXECUTABLE.toString();
+
+        if(path.isEmpty()){
+            return executeFile("main.c", command, CommandType.COMPILE_EXECUTABLE_COMMAND);
+
+        }
+
+        return executeFile(path, command,CommandType.COMPILE_EXECUTABLE_COMMAND);
+    }
+
+    /**
+     * gcc compile option2
+     * compile c file to object file
+     * gcc hello.c -o hello.o
+     */
+    @FXML
+    boolean compileToObjectFile(){
+
+        String command = CommandType.COMPILE_TO_OBJECT_FILE.toString();
+
+        if(path.isEmpty()){
+            return executeFile("main.c", command, CommandType.COMPILE_OBJECT_COMMAND);
+
+        }
+
+        return executeFile(path, command,CommandType.COMPILE_OBJECT_COMMAND);
+    }
 
 
     /**
-     * gcc link option
-     * gcc -shared hello.o -o hello.so
+     * gcc link option1
+     * gcc -shared hello.c -o hello
      * Produce a shared object which can then be linked with other objects to form an executable.
      * Not all systems support this option. For predictable results,
      * you must also specify the same set of options used for compilation
@@ -323,21 +320,40 @@ public class EditorPanelController {
      *
      */
     @FXML
-    void linkCFile(){
+    boolean linkCFile(){
         String command = CommandType.LINK_C.toString();
 
         if(path.isEmpty()){
-            executeFile("main.c", command, CommandType.LINKING_COMMAND);
-            return;
+            return executeFile("main.c", command, CommandType.LINKING_COMMAND);
+
         }
 
-        executeFile(path, command,CommandType.LINKING_COMMAND);
+        return executeFile(path, command,CommandType.LINKING_COMMAND);
+    }
+
+
+    /**
+     * gcc link option 2
+     * gcc -rdynamic hello.c -o hello
+     * Pass the flag -export-dynamic to the ELF linker, on targets that support it.
+     * This instructs the linker to add all symbols, not only used ones, to the dynamic symbol table.
+     * This option is needed for some uses of dlopen or to allow obtaining backtraces from within a program.
+     *
+     */
+    @FXML
+    boolean dynamicLink(){
+        String command = CommandType.LINI_DYNAMIC.toString();
+
+        if(path.isEmpty()){
+            return executeFile("main.c", command, CommandType.LINKING_DYNAMIC_COMMAND);
+        }
+
+        return executeFile(path, command, CommandType.LINKING_DYNAMIC_COMMAND);
     }
 
     /**
      * gcc debugging option1
-     * gcc debugging option gcc -g
-     * -g
+     * gcc -g hello.c -o hello
      * Produce debugging information in the operating system’s native format
      * (stabs, COFF, XCOFF, or DWARF). GDB can work with this debugging information.
      *
@@ -345,40 +361,38 @@ public class EditorPanelController {
      * that only GDB can use; this extra information makes debugging work better in GDB
      * but probably makes other debuggers crash or refuse to read the program.
      *
-     * gcc -g hello.c -o hello
+     *
      */
     @FXML
-    void debugInNativeInfo(){
+    boolean debugInNativeInfo(){
 
         String command = CommandType.DEBUG_G.toString();
 
         if(path.isEmpty()){
-            executeFile("main.c", command, CommandType.DEBUG_G_COMMAND);
-            return;
+            return executeFile("main.c", command, CommandType.DEBUG_G_COMMAND);
         }
 
-        executeFile(path, command,CommandType.DEBUG_G_COMMAND);
+        return executeFile(path, command,CommandType.DEBUG_G_COMMAND);
     }
 
     /**
      * gcc debugging option 2
-     * gcc debugging option gcc -ggdb
+     * gcc -ggdb hello.c -o hello
      * Produce debugging information for use by GDB. This means to use the most expressive format available
      * (DWARF, stabs, or the native format if neither of those are supported),
      * including GDB extensions if at all possible.
      *
-     * gcc -ggdb hello.c -o hello
+     *
      */
     @FXML
-    void debugInDwarfInfo(){
+    boolean debugInDwarfInfo(){
         String command = CommandType.DEBUG_GGDB.toString();
 
         if(path.isEmpty()){
-            executeFile("main.c", command, CommandType.DEBUG_GDBB_COMMAND);
-            return;
+            return executeFile("main.c", command, CommandType.DEBUG_GDBB_COMMAND);
         }
 
-        executeFile(path, command,CommandType.DEBUG_GDBB_COMMAND);
+        return executeFile(path, command,CommandType.DEBUG_GDBB_COMMAND);
     }
 
     /**
@@ -390,15 +404,14 @@ public class EditorPanelController {
      * and generate object file.
      */
     @FXML
-    void optimizeLevelTWo(){
+    boolean optimizeLevelTWo(){
         String command = CommandType.OPTIMIZE_C_LEVEL2.toString();
 
         if(path.isEmpty()){
-            executeFile("main.c", command, CommandType.OPTIMIZE_LEVEL2_COMMAND);
-            return;
+            return executeFile("main.c", command, CommandType.OPTIMIZE_LEVEL2_COMMAND);
         }
 
-        executeFile(path, command,CommandType.OPTIMIZE_LEVEL2_COMMAND);
+        return executeFile(path, command,CommandType.OPTIMIZE_LEVEL2_COMMAND);
     }
 
     /**
@@ -411,15 +424,14 @@ public class EditorPanelController {
      * and generate object file.
      */
     @FXML
-    void optimizeLevelOne(){
+    boolean optimizeLevelOne(){
         String command = CommandType.OPTIMIZE_C_LEVEL1.toString();
 
         if(path.isEmpty()){
-            executeFile("main.c", command, CommandType.OPTIMIZE_LEVEL1_COMMAND);
-            return;
+            return executeFile("main.c", command, CommandType.OPTIMIZE_LEVEL1_COMMAND);
         }
 
-        executeFile(path, command,CommandType.OPTIMIZE_LEVEL1_COMMAND);
+        return executeFile(path, command,CommandType.OPTIMIZE_LEVEL1_COMMAND);
     }
 
 
@@ -431,72 +443,85 @@ public class EditorPanelController {
      * and generate the object file
      */
     @FXML
-    void optimizeLevelThree(){
+    boolean optimizeLevelThree(){
         String command = CommandType.OPTIMIZE_C_LEVEL3.toString();
 
         if(path.isEmpty()){
-            executeFile("main.c", command, CommandType.OPTIMIZE_LEVEL3_COMMAND);
-            return;
+            return executeFile("main.c", command, CommandType.OPTIMIZE_LEVEL3_COMMAND);
         }
 
-        executeFile(path, command,CommandType.OPTIMIZE_LEVEL3_COMMAND);
+        return executeFile(path, command,CommandType.OPTIMIZE_LEVEL3_COMMAND);
     }
 
     /**
      * code Generation option 1
+     * gcc -ftrapv hello.c -o hello
      * This option generates traps for signed overflow on addition, subtraction, multiplication operations.
      * The options -ftrapv and -fwrapv override each other, so using -ftrapv -fwrapv on the command-line results in -fwrapv being effective.
      * Note that only active options override, so using -ftrapv -fwrapv -fno-wrapv on the command-line results in -ftrapv being effective.
      */
     @FXML
-    void genCodeFtrapv(){
+    boolean genCodeFtrapv(){
 
         String command = CommandType.CODE_GEN_FTRAPV.toString();
 
         if(path.isEmpty()){
-            executeFile("main.c", command, CommandType.CODE_GEN_FTRAPV_COMMAND);
-            return;
+            return executeFile("main.c", command, CommandType.CODE_GEN_FTRAPV_COMMAND);
         }
 
-        executeFile(path, command,CommandType.CODE_GEN_FTRAPV_COMMAND);
+        return executeFile(path, command,CommandType.CODE_GEN_FTRAPV_COMMAND);
     }
 
     /**
      * code generation option 2
+     * gcc -fwrapv hello.c -o hello
      * This option generates traps for signed overflow on addition, subtraction, multiplication operations.
      * The options -ftrapv and -fwrapv override each other, so using -ftrapv -fwrapv on the command-line results in -fwrapv being effective.
      * Note that only active options override, so using -ftrapv -fwrapv -fno-wrapv on the command-line results in -ftrapv being effective.
      */
     @FXML
-    void genCodeFwrapv(){
+    boolean genCodeFwrapv(){
         String command = CommandType.CODE_GEN_FWRAPV.toString();
 
         if(path.isEmpty()){
-            executeFile("main.c", command, CommandType.CODE_GEN_FTRAPV_COMMAND);
-            return;
+            return executeFile("main.c", command, CommandType.CODE_GEN_FTRAPV_COMMAND);
         }
 
-        executeFile(path, command,CommandType.CODE_GEN_FTRAPV_COMMAND);
+        return executeFile(path, command,CommandType.CODE_GEN_FTRAPV_COMMAND);
     }
 
 
     /**
      * gcc developer option1
+     * gcc  -fsave-optimization-record hello.c -o hello
      * Write a SRCFILE.opt-record.json.gz file detailing what optimizations were performed,
      * for those optimizations that support -fopt-info.
-     *
-     * gcc  -fsave-optimization-record hello.c
      */
     @FXML
-    void generateSrcfice(){
+    boolean generateSrcfice(){
         String command = CommandType.DEVELOPER_OPTIMIZATION.toString();
 
         if(path.isEmpty()){
-            executeFile("main.c", command, CommandType.DEVELOPER_OPTIMIZATION_COMMAND);
-            return;
+            return executeFile("main.c", command, CommandType.DEVELOPER_OPTIMIZATION_COMMAND);
         }
 
-        executeFile(path, command,CommandType.DEVELOPER_OPTIMIZATION_COMMAND);
+        return executeFile(path, command,CommandType.DEVELOPER_OPTIMIZATION_COMMAND);
+    }
+
+    /**
+     * gcc developer option2
+     * gcc -save-temps hello2.c -o hello2
+     * Store the usual “temporary” intermediate files permanently;
+     * place them in the current directory and name them based on the source file.
+     */
+    @FXML
+    boolean saveTemporaryFile(){
+        String command = CommandType.DEVELOPER_SAVE_TEPORARY_FILE.toString();
+        if(path.isEmpty()){
+            return executeFile("main.c", command, CommandType.DEVELOPER_SAVE_TEMPORARY_FILE_COMMAND);
+        }
+
+        return executeFile(path, command, CommandType.DEVELOPER_SAVE_TEMPORARY_FILE_COMMAND);
     }
 
     /**
@@ -509,20 +534,21 @@ public class EditorPanelController {
 
 
     @FXML
-    private void run(){
-        compileToExecutableFile();
+    private boolean run(){
+        if(!compileToExecutableFile()){
+            return false;
+        }
 
         if(path.isEmpty()){
             String fileName = "main";
             String command = CommandType.RUN + fileName;
-            executeCommand(command, fileName, CommandType.RUN_COMMAND);
-            return;
+            return executeCommand(command, fileName, CommandType.RUN_COMMAND);
         }
 
         String fileName = Paths.get(path).getFileName().toString();
         Path filePath = Paths.get(path);
         String command = Paths.get(filePath.getParent().toString(), FilenameUtils.removeExtension(fileName)).toString();
-        executeCommand(command, fileName, CommandType.RUN_COMMAND);
+        return executeCommand(command, fileName, CommandType.RUN_COMMAND);
     }
 
     @FXML
@@ -537,19 +563,16 @@ public class EditorPanelController {
             codeGeneration.setDisable(true);
             codeDevelopment.setDisable(true);
             codeOptimization.setDisable(true);
-            toolBox.setDisable(false);
             output.appendText("the user type has been changed to novice users\n");
         } else if (userType == TYPICAL) {
             codeOptimization.setDisable(false);
             codeGeneration.setDisable(false);
             codeDevelopment.setDisable(true);
-            toolBox.setDisable(false);
             output.appendText("the user type has been changed to typical users\n");
         } else {
             codeGeneration.setDisable(false);
             codeOptimization.setDisable(false);
             codeDevelopment.setDisable(false);
-            toolBox.setDisable(true);
             output.appendText("the user type has been changed to expert users\n");
         }
     }

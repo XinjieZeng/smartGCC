@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -17,7 +19,7 @@
 <AnchorPane xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="smartgcc.view.controller.EditorPanelController">
 
 
-    <MenuBar nodeOrientation="LEFT_TO_RIGHT" prefHeight="600.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" BorderPane.alignment="CENTER">
+    <MenuBar fx:id="menuBar" nodeOrientation="LEFT_TO_RIGHT" prefHeight="39.0" prefWidth="800.0" AnchorPane.bottomAnchor="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" BorderPane.alignment="CENTER">
         <menus>
 
             <Menu mnemonicParsing="false" text="File">
@@ -42,6 +44,7 @@
             </Menu>
 
 
+
             <Menu mnemonicParsing="false" text="Commands">
                 <items>
                <Menu mnemonicParsing="false" text="Compile">
@@ -53,6 +56,7 @@
                <Menu mnemonicParsing="false" text="Linking">
                  <items>
                      <MenuItem mnemonicParsing="false" onAction="#linkCFile" text="Link -share" />
+                     <MenuItem mnemonicParsing="false" onAction="#dynamicLink" text="Link -rdynamic" />
                  </items>
                </Menu>
 
@@ -60,11 +64,12 @@
                  <items>
                           <MenuItem mnemonicParsing="false" onAction="#debugInNativeInfo" text="Debug -g">
                           </MenuItem>
-      
+
                           <MenuItem mnemonicParsing="false" onAction="#debugInDwarfInfo" text="Debug -ggdb">
                           </MenuItem>
                  </items>
                </Menu>
+
                <SeparatorMenuItem mnemonicParsing="false" />
                <Menu fx:id="codeOptimization" mnemonicParsing="false" text="Code Optimization">
                     <items>
@@ -89,26 +94,11 @@
 
                <Menu fx:id="codeDevelopment" mnemonicParsing="false" text="Code Developer">
                  <items>
-                   <MenuItem mnemonicParsing="false" onAction="#generateSrcfice" text="Generate SRCFILE file" />
+                   <MenuItem mnemonicParsing="false" onAction="#generateSrcfice" text="developer -fsave-optimization-record" />
+                     <MenuItem mnemonicParsing="false" onAction="#saveTemporaryFile" text="developer gcc -save-temps" />
                  </items>
                </Menu>
 
-                </items>
-            </Menu>
-
-
-            <Menu id="run" mnemonicParsing="false" text="Run">
-                <items>
-                    <MenuItem mnemonicParsing="false" onAction="#run" text="Run Program">
-                        <accelerator>
-                            <KeyCodeCombination alt="UP" code="F11" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                        </accelerator>
-                    </MenuItem>
-                </items>
-            </Menu>
-            <Menu mnemonicParsing="false" text="Stop">
-                <items>
-                    <MenuItem mnemonicParsing="false" onAction="#stop" text="Stop Program" />
                 </items>
             </Menu>
 
@@ -118,28 +108,34 @@
                 </items>
             </Menu>
 
-            <Menu mnemonicParsing="false" onAction="#selectUserType" text="Users">
-                <items>
-                    <MenuItem mnemonicParsing="false" text="Change Users Type" />
-                </items>
-            </Menu>
-            <Menu mnemonicParsing="false" onAction="#showToolBoxDialogue" text="ToolBox">
-            <items>
-               <MenuItem fx:id="toolBox" mnemonicParsing="false" text="All available options" />
-            </items>
-            </Menu>
+            <!--<Menu mnemonicParsing="false" onAction="#selectUserType" text="Users">-->
+                <!--<items>-->
+                    <!--<MenuItem mnemonicParsing="false" text="Change Users Type" />-->
+                <!--</items>-->
+            <!--</Menu>-->
+            <!--<Menu mnemonicParsing="false" onAction="#showToolBoxDialogue" text="ToolBox">-->
+            <!--<items>-->
+               <!--<MenuItem mnemonicParsing="false" text="All available options" />-->
+            <!--</items>-->
+            <!--</Menu>-->
 
-            <Menu mnemonicParsing="false" onAction="#showHelpDialogue" text="Help">
-                <items>
-                    <MenuItem fx:id="help" mnemonicParsing="false" text="Help ?" />
-                </items>
-            </Menu>
+            <!--<Menu mnemonicParsing="false" onAction="#showHelpDialogue" text="Help">-->
+                <!--<items>-->
+                    <!--<MenuItem fx:id="help" mnemonicParsing="false" text="Help ?" />-->
+                <!--</items>-->
+            <!--</Menu>-->
         </menus>
+      <opaqueInsets>
+         <Insets />
+      </opaqueInsets>
+      <padding>
+         <Insets bottom="10.0" />
+      </padding>
     </MenuBar>
 
     <SplitPane dividerPositions="0.6666666666666666" layoutX="153.0" layoutY="29.0" orientation="VERTICAL" prefHeight="371.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="29.0">
         <items>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="background">
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="356.0" prefWidth="798.0" styleClass="background">
                 <children>
                     <Label fx:id="fileName" layoutX="29.0" layoutY="39.0" styleClass="label-header" text="Main.c" AnchorPane.leftAnchor="29.0" AnchorPane.topAnchor="39.0" />
                <TextArea fx:id="editorArea" layoutX="29.0" layoutY="56.0" prefHeight="298.0" prefWidth="744.0" />
@@ -151,7 +147,7 @@
                     <Label layoutX="26.0" layoutY="6.0" styleClass="label-header" text="Output" AnchorPane.leftAnchor="26.0" AnchorPane.topAnchor="6.0" />
                <ImageView fitHeight="17.0" fitWidth="23.0" layoutX="5.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
                   <image>
-                     <Image url="@../assets/terminal2.png" />
+                     <Image url="@../assets/terminal-box-fill.png" />
                   </image>
                </ImageView>
 
@@ -162,4 +158,52 @@
             </AnchorPane>
         </items>
     </SplitPane>
+
+   <Button layoutX="555.0" mnemonicParsing="false" onAction="#run" style="-fx-background-radius: 5;" textAlignment="CENTER">
+       <graphic>
+         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" smooth="false">
+            <image>
+               <Image url="@../assets/run3.png" />
+            </image>
+         </ImageView>
+      </graphic>
+   </Button>
+
+        <Button layoutX="600.0" mnemonicParsing="false" onAction="#stop" style="-fx-background-radius: 5;" textAlignment="CENTER">
+            <graphic>
+                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" smooth="false">
+                    <image>
+                        <Image url="@../assets/stop.png" />
+                    </image>
+                </ImageView>
+            </graphic></Button>
+        <Button layoutX="645.0" mnemonicParsing="false" onAction="#selectUserType" style="-fx-background-radius: 5;" textAlignment="CENTER">
+            <graphic>
+                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" smooth="false">
+                    <image>
+                        <Image url="@../assets/user.png" />
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Button layoutX="690.0" mnemonicParsing="false" onAction="#showToolBoxDialogue" style="-fx-background-radius: 5;" textAlignment="CENTER">
+            <graphic>
+                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" smooth="false">
+                    <image>
+                        <Image url="@../assets/ts-tool-box.png" />
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+
+        <Button fx:id="helpButton" alignment="TOP_LEFT" layoutX="735.0" mnemonicParsing="false" onAction="#showHelpDialogue" style="-fx-background-radius: 5;" textAlignment="CENTER">
+            <graphic>
+                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" smooth="false">
+                    <image>
+                        <Image url="@../assets/help2.png" />
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+
 </AnchorPane>

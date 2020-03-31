@@ -18,6 +18,8 @@ public class ToolBoxPanelController {
     @FXML
     CheckBox link_shared;
     @FXML
+    CheckBox link_dynamic;
+    @FXML
     CheckBox debug_g;
     @FXML
     CheckBox debug_gdbb;
@@ -25,7 +27,6 @@ public class ToolBoxPanelController {
     CheckBox gen_ftrapv;
     @FXML
     CheckBox gen_fwrapv;
-
     @FXML
     CheckBox optimize_1;
     @FXML
@@ -34,6 +35,8 @@ public class ToolBoxPanelController {
     CheckBox optimize_3;
     @FXML
     CheckBox developer_fsave_optimization_record;
+    @FXML
+    CheckBox developer_save_temps;
 
 
     public ToolBoxPanelController(){}
@@ -69,6 +72,10 @@ public class ToolBoxPanelController {
     private void executeLinkCommand(){
         if(link_shared.isSelected()){
             controller.linkCFile();
+        }
+
+        if(link_dynamic.isSelected()){
+            controller.dynamicLink();
         }
     }
 
@@ -110,6 +117,10 @@ public class ToolBoxPanelController {
     private void executeDeveloperCommand(){
         if(developer_fsave_optimization_record.isSelected()){
             controller.generateSrcfice();
+        }
+
+        if(developer_save_temps.isSelected()){
+            controller.saveTemporaryFile();
         }
     }
 
