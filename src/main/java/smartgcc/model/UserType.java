@@ -1,10 +1,11 @@
-package sample.model;
+package smartgcc.model;
 
 public enum UserType {
 
     NOVICE("novice"),
     TYPICAL("typical"),
-    EXPERT("expert");
+    EXPERT("expert"),
+    UNKNOWN("unknown");
 
     private String userType;
 

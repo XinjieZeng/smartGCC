@@ -1,4 +1,4 @@
-package sample.model;
+package smartgcc.model;
 
 public enum CommandType {
     COMPILE_EXECUTABLE_COMMAND("compile to executable file"),

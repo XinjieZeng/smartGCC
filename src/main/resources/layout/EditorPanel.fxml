@@ -5,7 +5,6 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.RadioMenuItem?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextArea?>
@@ -14,12 +13,11 @@
 <?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.text.Text?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.view.EditorPanelController">
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="smartgcc.view.controller.EditorPanelController">
 
 
-    <MenuBar nodeOrientation="LEFT_TO_RIGHT" prefHeight="600.0" prefWidth="400.0" stylesheets="view.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" BorderPane.alignment="CENTER">
+    <MenuBar nodeOrientation="LEFT_TO_RIGHT" prefHeight="600.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" BorderPane.alignment="CENTER">
         <menus>
 
             <Menu mnemonicParsing="false" text="File">
@@ -30,8 +28,16 @@
                         </accelerator>
                     </MenuItem>
 
-                    <MenuItem mnemonicParsing="false" text="Save As..." onAction="#saveFile"/>
-                    <MenuItem mnemonicParsing="false" onAction="#handleExit" text="Exit" />
+                    <MenuItem mnemonicParsing="false" onAction="#saveFile" text="Save As...">
+                        <accelerator>
+                            <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                        </accelerator>
+                    </MenuItem>
+                    <MenuItem mnemonicParsing="false" onAction="#handleExit" text="Exit">
+                        <accelerator>
+                            <KeyCodeCombination alt="UP" code="Q" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                        </accelerator>
+                    </MenuItem>
                 </items>
             </Menu>
 
@@ -53,15 +59,9 @@
                <Menu mnemonicParsing="false" text="Debugging">
                  <items>
                           <MenuItem mnemonicParsing="false" onAction="#debugInNativeInfo" text="Debug -g">
-                              <accelerator>
-                                  <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                              </accelerator>
                           </MenuItem>
       
                           <MenuItem mnemonicParsing="false" onAction="#debugInDwarfInfo" text="Debug -ggdb">
-                              <accelerator>
-                                  <KeyCodeCombination alt="UP" code="M" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                              </accelerator>
                           </MenuItem>
                  </items>
                </Menu>
@@ -99,12 +99,16 @@
 
             <Menu id="run" mnemonicParsing="false" text="Run">
                 <items>
-                    <MenuItem mnemonicParsing="false" text="Run Program" onAction="#run" />
+                    <MenuItem mnemonicParsing="false" onAction="#run" text="Run Program">
+                        <accelerator>
+                            <KeyCodeCombination alt="UP" code="F11" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                        </accelerator>
+                    </MenuItem>
                 </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Stop">
                 <items>
-                    <MenuItem mnemonicParsing="false" text="Stop Program" onAction="#stop"/>
+                    <MenuItem mnemonicParsing="false" onAction="#stop" text="Stop Program" />
                 </items>
             </Menu>
 
@@ -125,7 +129,7 @@
             </items>
             </Menu>
 
-            <Menu mnemonicParsing="false" text="Help" onAction="#showHelpDialogue">
+            <Menu mnemonicParsing="false" onAction="#showHelpDialogue" text="Help">
                 <items>
                     <MenuItem fx:id="help" mnemonicParsing="false" text="Help ?" />
                 </items>
@@ -147,16 +151,12 @@
                     <Label layoutX="26.0" layoutY="6.0" styleClass="label-header" text="Output" AnchorPane.leftAnchor="26.0" AnchorPane.topAnchor="6.0" />
                <ImageView fitHeight="17.0" fitWidth="23.0" layoutX="5.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
                   <image>
-                     <Image url="@run.png" />
+                     <Image url="@../assets/terminal2.png" />
                   </image>
                </ImageView>
 
                <AnchorPane fx:id="outputWindow" layoutX="6.0" layoutY="28.0" prefHeight="151.0" prefWidth="782.0">
-                  <ScrollPane prefHeight="200.0" prefWidth="782.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <content>
-                         <Text fx:id="output" wrappingWidth="479.0" />
-                     </content>
-                  </ScrollPane>
+                         <TextArea fx:id="output" editable="false" minHeight="140.0" minWidth="479.0" prefHeight="140.0" prefWidth="782.0" />
                </AnchorPane>
                 </children>
             </AnchorPane>

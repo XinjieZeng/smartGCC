@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="300.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.view.UserSwitchDialogueController">
+<AnchorPane prefHeight="300.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="smartgcc.view.controller.UserSwitchDialogueController">
 
     <GridPane alignment="center" hgap="10" layoutX="15" layoutY="23" prefHeight="200" prefWidth="320" vgap="10">
 
@@ -29,11 +29,13 @@
         <RadioButton mnemonicParsing="false" text="typical" toggleGroup="$toggleGroup" GridPane.columnIndex="1" GridPane.rowIndex="2" />
         <RadioButton mnemonicParsing="false" text="expert" toggleGroup="$toggleGroup" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
-        <Text text="Remember Setting?" wrappingWidth="123.529296875" GridPane.columnIndex="1" GridPane.rowIndex="6">
-         <GridPane.margin>
-            <Insets left="30.0" />
-         </GridPane.margin></Text>
-        <CheckBox fx:id="rememberUserType"  mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <!--<Text text="Remember Setting?" fx:id="rememberUserText" wrappingWidth="123.529296875" GridPane.columnIndex="1" GridPane.rowIndex="6">-->
+                <!--<GridPane.margin>-->
+                    <!--<Insets left="30.0" />-->
+                <!--</GridPane.margin></Text>-->
+            <!--<CheckBox fx:id="rememberUserType" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="6" />-->
+
+
         <columnConstraints>
          <ColumnConstraints />
          <ColumnConstraints />
@@ -59,7 +61,7 @@
 
    <ImageView fx:id="userTypeTip" fitHeight="25.0" fitWidth="25.0" layoutX="323.0" layoutY="47.0" pickOnBounds="true" preserveRatio="true">
       <image>
-         <Image url="@question2.png" />
+         <Image url="@../assets/question2.png" />
       </image>
    </ImageView>
 

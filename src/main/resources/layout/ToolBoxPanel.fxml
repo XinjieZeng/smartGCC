@@ -13,7 +13,8 @@
 
 <?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.Button?>
-<AnchorPane prefHeight="300.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.view.ToolBoxPanelController">
+<?import javafx.scene.control.CheckBox?>
+<AnchorPane prefHeight="300.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="smartgcc.view.controller.ToolBoxPanelController">
 
     <children>
       <TabPane prefHeight="233.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="67.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -26,13 +27,9 @@
 
                             <Text text="Compile Options" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0" />
 
-                            <RadioButton mnemonicParsing="false" text="Compile to Executable File" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                <toggleGroup>
-                                    <ToggleGroup fx:id="compileToggleGroup" />
-                                </toggleGroup>
-                            </RadioButton>
+                            <CheckBox fx:id="compile_executable" mnemonicParsing="false" text="Compile to Executable File" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                            <CheckBox fx:id="compile_object" mnemonicParsing="false" text="Compile to object File" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-                            <RadioButton mnemonicParsing="false" text="Compile to object File" toggleGroup="$compileToggleGroup" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <columnConstraints>
                            <ColumnConstraints />
                            <ColumnConstraints />
@@ -54,11 +51,8 @@
 
                             <Text text="Linking Options" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0" />
 
-                            <RadioButton mnemonicParsing="false" text="link -shared " GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                <toggleGroup>
-                                    <ToggleGroup fx:id="linkToggleGroup" />
-                                </toggleGroup>
-                            </RadioButton>
+                            <CheckBox fx:id="link_shared" mnemonicParsing="false" text="link -shared" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
                         <columnConstraints>
                            <ColumnConstraints />
                            <ColumnConstraints />
@@ -79,14 +73,8 @@
                         <GridPane alignment="center" hgap="10" prefHeight="200" prefWidth="320" vgap="10">
 
                             <Text text="Debugging Options" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0" />
-
-                            <RadioButton mnemonicParsing="false" text="debug -g " GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                <toggleGroup>
-                                    <ToggleGroup fx:id="debugToggleGroup" />
-                                </toggleGroup>
-                            </RadioButton>
-
-                            <RadioButton mnemonicParsing="false" text="debug -gdbb " toggleGroup="$debugToggleGroup" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                            <CheckBox fx:id="debug_g" mnemonicParsing="false" text="debug -g" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                            <CheckBox fx:id="debug_gdbb" mnemonicParsing="false" text="debug -gdbb" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <columnConstraints>
                            <ColumnConstraints />
                            <ColumnConstraints />
@@ -108,14 +96,9 @@
 
                             <Text text="Code Generation Options" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0" />
 
-                            <RadioButton mnemonicParsing="false" text="code gen -ftrapv" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                <toggleGroup>
-                                    <ToggleGroup fx:id="genCodeToggleGroup" />
-                                </toggleGroup>
-                            </RadioButton>
-
-                            <RadioButton mnemonicParsing="false" text="code gen -fwrapv" toggleGroup="$genCodeToggleGroup" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <columnConstraints>
+                            <CheckBox fx:id="gen_ftrapv" mnemonicParsing="false" text="code gen -ftrapv" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                            <CheckBox fx:id="gen_fwrapv" mnemonicParsing="false" text="code gen -fwrapv" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                            <columnConstraints>
                            <ColumnConstraints />
                            <ColumnConstraints />
                         </columnConstraints>
@@ -136,15 +119,13 @@
 
                             <Text text="Code Optimization Options" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0" />
 
-                            <RadioButton mnemonicParsing="false" text="optimization level 1" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                <toggleGroup>
-                                    <ToggleGroup fx:id="optimizeToggleGroup" />
-                                </toggleGroup>
-                            </RadioButton>
+                            <CheckBox fx:id="optimize_1" mnemonicParsing="false" text="optimization level 1" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-                            <RadioButton mnemonicParsing="false" text="optimization level 2" toggleGroup="$optimizeToggleGroup" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                            <RadioButton mnemonicParsing="false" text="optimization level 3" toggleGroup="$optimizeToggleGroup" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <columnConstraints>
+                            <CheckBox fx:id="optimize_2" mnemonicParsing="false" text="optimization level 2" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                            <CheckBox fx:id="optimize_3" mnemonicParsing="false" text="optimization level 3" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+                            <columnConstraints>
                            <ColumnConstraints />
                            <ColumnConstraints />
                         </columnConstraints>
@@ -166,13 +147,7 @@
                         <GridPane alignment="center" hgap="10" prefHeight="200" prefWidth="320" vgap="10">
 
                             <Text text="Developer Options" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0" />
-
-                            <RadioButton mnemonicParsing="false" text="developer -fsave-optimization-record " GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                <toggleGroup>
-                                    <ToggleGroup fx:id="developerToggleGroup" />
-                                </toggleGroup>
-                            </RadioButton>
-
+                            <CheckBox fx:id="developer_fsave_optimization_record" mnemonicParsing="false" text="developer -fsave-optimization-record" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                             <columnConstraints>
                            <ColumnConstraints />
                            <ColumnConstraints />
