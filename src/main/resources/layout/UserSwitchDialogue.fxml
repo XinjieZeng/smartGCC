@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
+<?import com.jfoenix.controls.JFXButton?>
 <?import javafx.scene.control.ButtonBar?>
-<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.image.Image?>
@@ -14,7 +12,8 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="300.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="smartgcc.view.controller.UserSwitchDialogueController">
+<?import javafx.scene.control.Button?>
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="smartgcc.view.controller.UserSwitchDialogueController">
 
     <GridPane alignment="center" hgap="10" layoutX="15" layoutY="23" prefHeight="200" prefWidth="320" vgap="10">
 
@@ -54,14 +53,14 @@
 
     <ButtonBar layoutX="176.0" layoutY="233.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0">
         <buttons>
-            <Button mnemonicParsing="false" onAction="#handleCancel" prefWidth="120.0" text="Cancel" />
-            <Button defaultButton="true" mnemonicParsing="false" onAction="#handleOK" text="OK" />
+            <Button mnemonicParsing="false" onAction="#handleCancel" prefWidth="120.0" styleClass="button-raised" text="Cancel" />
+            <Button defaultButton="true" mnemonicParsing="false" onAction="#handleOK" styleClass="button-raised" text="OK" />
         </buttons>
     </ButtonBar>
 
-   <ImageView fx:id="userTypeTip" fitHeight="25.0" fitWidth="25.0" layoutX="323.0" layoutY="47.0" pickOnBounds="true" preserveRatio="true">
+   <ImageView fx:id="userTypeTip" fitHeight="25.0" fitWidth="25.0" layoutX="323.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
       <image>
-         <Image url="@../assets/question2.png" />
+         <Image url="@../assets/question3.png" />
       </image>
    </ImageView>
 

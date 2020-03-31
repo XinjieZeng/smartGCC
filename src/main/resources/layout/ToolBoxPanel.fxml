@@ -52,6 +52,7 @@
                             <Text text="Linking Options" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0" />
 
                             <CheckBox fx:id="link_shared" mnemonicParsing="false" text="link -shared" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                            <CheckBox fx:id="link_dynamic" mnemonicParsing="false" text="link -rdynamic" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
                         <columnConstraints>
                            <ColumnConstraints />
@@ -148,6 +149,9 @@
 
                             <Text text="Developer Options" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0" />
                             <CheckBox fx:id="developer_fsave_optimization_record" mnemonicParsing="false" text="developer -fsave-optimization-record" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                            <CheckBox fx:id="developer_save_temps" mnemonicParsing="false" text="developer -save-temps" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+
                             <columnConstraints>
                            <ColumnConstraints />
                            <ColumnConstraints />
