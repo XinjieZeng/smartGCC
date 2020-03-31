@@ -1,15 +1,12 @@
-package sample.view;
+package smartgcc.view.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
-import sample.MainApp;
-import sample.model.CommandType;
-import sample.model.UserType;
+import smartgcc.model.CommandType;
 
 public class ToolBoxPanelController {
-    private MainApp mainApp;
     private Stage dialogueStage;
     private EditorPanelController controller;
 
@@ -26,18 +23,10 @@ public class ToolBoxPanelController {
     @FXML
     ToggleGroup developerToggleGroup;
 
-    public void setDialogueStage(Stage dialogueStage){
-        this.dialogueStage = dialogueStage;
-    }
-
     public ToolBoxPanelController(){}
 
     @FXML
     private void initialize(){ }
-
-    public void setMainApp(MainApp mainApp){
-        this.mainApp = mainApp;
-    }
 
     @FXML
     private void handleCancel(){
@@ -56,7 +45,6 @@ public class ToolBoxPanelController {
     }
 
     private void executeCompileCommand(){
-        controller = mainApp.getEditorPanelController();
         RadioButton selectedRadioButton = (RadioButton) compileToggleGroup.getSelectedToggle();
 
         if(selectedRadioButton == null){
@@ -74,7 +62,6 @@ public class ToolBoxPanelController {
     }
 
     private void executeLinkCommand(){
-        controller = mainApp.getEditorPanelController();
         RadioButton selectedRadioButton = (RadioButton) linkToggleGroup.getSelectedToggle();
 
         if(selectedRadioButton == null){
@@ -88,7 +75,6 @@ public class ToolBoxPanelController {
     }
 
     private void executeDebugCommand(){
-        controller = mainApp.getEditorPanelController();
         RadioButton selectedRadioButton = (RadioButton) debugToggleGroup.getSelectedToggle();
 
         if(selectedRadioButton == null){
@@ -105,7 +91,6 @@ public class ToolBoxPanelController {
     }
 
     private void executeGenCodeCommand(){
-        controller = mainApp.getEditorPanelController();
         RadioButton selectedRadioButton = (RadioButton) genCodeToggleGroup.getSelectedToggle();
 
         if(selectedRadioButton == null){
@@ -123,7 +108,6 @@ public class ToolBoxPanelController {
     }
 
     private void executeOptimizeCodeCommand(){
-        controller = mainApp.getEditorPanelController();
         RadioButton selectedRadioButton = (RadioButton) optimizeToggleGroup.getSelectedToggle();
         if(selectedRadioButton == null){
             return;
@@ -142,7 +126,6 @@ public class ToolBoxPanelController {
     }
 
     private void executeDeveloperCommand(){
-        controller = mainApp.getEditorPanelController();
         RadioButton selectedRadioButton = (RadioButton) developerToggleGroup.getSelectedToggle();
 
         if(selectedRadioButton == null){
@@ -153,5 +136,13 @@ public class ToolBoxPanelController {
         if(toggleGroupValue.equalsIgnoreCase(CommandType.DEVELOPER_OPTIMIZATION_COMMAND.toString())){
             controller.generateSrcfice();
         }
+    }
+
+    public void setController(EditorPanelController editorPanelController){
+        this.controller = editorPanelController;
+    }
+
+    public void setDialogueStage(Stage dialogueStage){
+        this.dialogueStage = dialogueStage;
     }
 }

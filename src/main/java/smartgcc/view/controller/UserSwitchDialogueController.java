@@ -1,38 +1,33 @@
-package sample.view;
+package smartgcc.view.controller;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
-import javafx.scene.text.Text;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.apache.commons.io.FileUtils;
-import sample.MainApp;
-import sample.model.UserType;
-import sample.utils.UIUtils;
+import smartgcc.MainApp;
+import smartgcc.model.Layout;
+import smartgcc.model.UserType;
+import smartgcc.utils.UIUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 
 public class UserSwitchDialogueController {
     private Stage dialogStage;
     private UserType userType;
-    private boolean okClicked;
-    private MainApp mainApp;
+
+    private EditorPanelController editorPanelController;
 
     @FXML
     private ImageView userTypeTip;
     @FXML
     private ToggleGroup toggleGroup;
-    @FXML
-    private CheckBox rememberUserType;
-    @FXML
-    private Text rememberUserText;
-
-
-    public void setMainApp(MainApp mainApp){
-        this.mainApp = mainApp;
-    }
 
     @FXML
     private void initialize(){
@@ -45,23 +40,14 @@ public class UserSwitchDialogueController {
     }
 
     private void rememberUserChoice(){
-        boolean isRememberUserClicked = rememberUserType.isSelected();
-
-        if(isRememberUserClicked){
-            rememberUserType.setVisible(false);
-            rememberUserText.setVisible(false);
-        }
-
-        saveUserTypeToFile(isRememberUserClicked);
+        saveUserTypeToFile();
     }
 
-    private void saveUserTypeToFile(boolean isRememberUserClicked){
+    private void saveUserTypeToFile(){
         File file = new File("userChoice.txt");
 
-        String res = Boolean.toString(isRememberUserClicked) + " " + userType.toString();
-
         try {
-            FileUtils.write(file,res, StandardCharsets.UTF_8);
+            FileUtils.write(file,userType.toString(), StandardCharsets.UTF_8);
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -87,33 +73,35 @@ public class UserSwitchDialogueController {
         RadioButton selectedRadioButton = (RadioButton) toggleGroup.getSelectedToggle();
         String toggleGroupValue = selectedRadioButton.getText();
 
+        EditorPanelController controller = Optional.ofNullable(editorPanelController).orElseGet(() -> {
+            FXMLLoader loader = UIUtils.initLoader(Layout.EDITOR_PANEL);
+            try {
+                AnchorPane panel = loader.load();
+                Scene scene = new Scene(panel);
+                dialogStage.setScene(scene);
+
+                return loader.getController();
+            } catch (IOException e) {
+                throw new RuntimeException();
+            }
+        });
+
         if(toggleGroupValue.equalsIgnoreCase(UserType.NOVICE.toString())){
             userType = UserType.NOVICE;
-            mainApp.initRootLayout(UserType.NOVICE);
+            controller.changeFunctionality(UserType.NOVICE);
         }
         else if(toggleGroupValue.equalsIgnoreCase(UserType.TYPICAL.toString())){
-            mainApp.initRootLayout(UserType.TYPICAL);
             userType = UserType.TYPICAL;
+            controller.changeFunctionality(UserType.TYPICAL);
         }
         else{
-            mainApp.initRootLayout(UserType.EXPERT);
             userType = UserType.EXPERT;
+            controller.changeFunctionality(UserType.EXPERT);
         }
-
         rememberUserChoice();
     }
 
-    public void disableRememberSetting(){
-        rememberUserText.setVisible(false);
-        rememberUserType.setVisible(false);
-
+    public void setEditorPanelController(EditorPanelController editorPanelController) {
+        this.editorPanelController = editorPanelController;
     }
-
-
-
-    public boolean isOKClicked(){
-        return okClicked;
-    }
-
-
 }

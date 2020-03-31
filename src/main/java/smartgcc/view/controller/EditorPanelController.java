@@ -1,22 +1,28 @@
-package sample.view;
+package smartgcc.view.controller;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.PumpStreamHandler;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import sample.MainApp;
-import sample.model.CommandType;
+import smartgcc.MainApp;
+import smartgcc.model.CommandType;
+import smartgcc.model.Layout;
+import smartgcc.model.UserType;
+import smartgcc.utils.UIUtils;
 
 import java.io.*;
 import java.nio.charset.Charset;
@@ -25,14 +31,20 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
+import static smartgcc.model.Layout.*;
+import static smartgcc.model.UserType.NOVICE;
+import static smartgcc.model.UserType.TYPICAL;
+
 
 public class EditorPanelController {
     private MainApp mainApp;
     private String path = "";
-    private String result = "";
+
+    private Stage stage;
 
     @FXML
     private MenuItem codeGeneration;
+
     @FXML
     private MenuItem codeOptimization;
     @FXML
@@ -40,17 +52,13 @@ public class EditorPanelController {
     @FXML
     private MenuItem toolBox;
     @FXML
-    private AnchorPane outputWindow;
-    @FXML
-    private Text output;
+    private TextArea output;
     @FXML
     private Menu commandHistory;
     @FXML
     private TextArea editorArea;
     @FXML
     private Label fileName;
-
-
 
     public EditorPanelController() {
     }
@@ -66,36 +74,27 @@ public class EditorPanelController {
     }
 
     private void autoSave(){
-
         ObservableList<CharSequence> paragraph = editorArea.getParagraphs();
         Iterator<CharSequence> iter = paragraph.iterator();
+        File file = Optional.of(path)
+                .filter(p -> !p.isEmpty())
+                .map(p -> new File(path))
+                .orElseGet(() -> new File("main.c"));
 
-        try {
-
-            File file;
-            if(path.isEmpty()){
-                file = new File("main.c");
-            }
-            else{
-                file = new File(path);
-            }
-
-            BufferedWriter bf = new BufferedWriter(new FileWriter(file));
-            while(iter.hasNext()) {
+        try (BufferedWriter bf = new BufferedWriter(new FileWriter(file))) {
+            while (iter.hasNext()) {
                 CharSequence seq = iter.next();
                 bf.append(seq);
                 bf.newLine();
             }
-            bf.flush();
-            bf.close();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     @FXML
     private void saveFile(){
+
         FileChooser fileChooser = new FileChooser();
 
         // Set extension filter
@@ -108,13 +107,11 @@ public class EditorPanelController {
 
         if (file != null) {
             // Make sure it has the correct extension
-
             Path newFilePath = Paths.get(file.getAbsolutePath());
-
             try{
                 Files.createFile(newFilePath);
                 FileUtils.writeStringToFile(file, editorArea.getText(), Charset.defaultCharset());
-                result += "Successfully save " + file.getName() + " to " + newFilePath.toAbsolutePath().toString();
+                output.appendText("Successfully save " + file.getName() + " to " + newFilePath.toAbsolutePath().toString());
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -136,6 +133,9 @@ public class EditorPanelController {
         // Show save file dialog
         File file = fileChooser.showOpenDialog(mainApp.getPrimaryStage());
 
+        if(file == null){
+            return;
+        }
         path = file.getAbsolutePath();
         fileName.setText(file.getName());
         try{
@@ -265,15 +265,12 @@ public class EditorPanelController {
         try {
             int value = executor.execute(commandLine);
             System.out.println(byteArrayOutputStream.toString());
-            result += byteArrayOutputStream.toString() + "\n";
+            output.appendText(byteArrayOutputStream.toString() + "\n");
             if (value == 0) {
-                result += file + ": successfully implements " + commandType.toString() + "\n";
+                output.appendText(file + ": successfully implements " + commandType.toString() + "\n");
             }
-
-            output.setText(result);
         } catch (Exception e) {
-            result += "Error: \n" + errorOutputStream.toString();
-            output.setText(result);
+            output.appendText("Error: \n" + errorOutputStream.toString());
             System.out.println(errorOutputStream.toString());
         }
     }
@@ -531,39 +528,45 @@ public class EditorPanelController {
     @FXML
     private void stop(){}
 
-    public void setMainApp(MainApp mainApp){
-        this.mainApp = mainApp;
-    }
-
     public void selectUserType(){
-        mainApp.switchUserDialogue();
+        UIUtils.switchUserDialog(stage, SWITCH_USER_PANEL, this);
     }
 
-    public void disableFunctionalitiesFromNovice(){
-        codeGeneration.setDisable(true);
-        codeDevelopment.setDisable(true);
-        codeOptimization.setDisable(true);
-        result += "the user type has been changed to novice users\n";
-        output.setText(result);
+    public void changeFunctionality(UserType userType) {
+        if (userType == NOVICE) {
+            codeGeneration.setDisable(true);
+            codeDevelopment.setDisable(true);
+            codeOptimization.setDisable(true);
+            toolBox.setDisable(false);
+            output.appendText("the user type has been changed to novice users\n");
+        } else if (userType == TYPICAL) {
+            codeOptimization.setDisable(false);
+            codeGeneration.setDisable(false);
+            codeDevelopment.setDisable(true);
+            toolBox.setDisable(false);
+            output.appendText("the user type has been changed to typical users\n");
+        } else {
+            codeGeneration.setDisable(false);
+            codeOptimization.setDisable(false);
+            codeDevelopment.setDisable(false);
+            toolBox.setDisable(true);
+            output.appendText("the user type has been changed to expert users\n");
+        }
     }
 
-    public void disableFunctionalitiesFromTypical(){
-        codeDevelopment.setDisable(true);
-        result += "the user type has been changed to typical users\n";
-        output.setText(result);
-    }
-
-    public void disableFunctionalitiesFromExpert(){
-        toolBox.setDisable(true);
-        result += "the user type has been changed to expert users\n";
-        output.setText(result);
-    }
     public void showToolBoxDialogue(){
-        mainApp.switchToolboxDialogue();
+        UIUtils.switchToolBoxDialog(stage, TOOLBOX_PANEL, this);
     }
 
     public void showHelpDialogue(){
-        mainApp.switchHelpBoxDialogue();
+        UIUtils.switchHelpDialog(stage, HELP_PANEL, this);
     }
 
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
+    public void setMainApp(MainApp mainApp){
+        this.mainApp = mainApp;
+    }
 }
