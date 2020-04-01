@@ -14,6 +14,7 @@ import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.PumpStreamHandler;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
 import smartgcc.MainApp;
 import smartgcc.model.CommandType;
 import smartgcc.model.UserType;
@@ -226,7 +227,9 @@ public class EditorPanelController {
             System.out.println(byteArrayOutputStream.toString());
             output.appendText(byteArrayOutputStream.toString() + "\n");
             if (value == 0) {
-                output.appendText(file + ": successfully implements " + commandType.toString() + "\n");
+
+                String msg = getMsg(command, file, commandType);
+                output.appendText(msg);
             }
         } catch (Exception e) {
             output.appendText("Error: \n" + errorOutputStream.toString());
@@ -237,40 +240,61 @@ public class EditorPanelController {
         return true;
     }
 
+    private String getMsg(String command, String file, CommandType commandType) {
+        if(CommandType.RUN_COMMAND == commandType) {
+            return StringUtils.EMPTY;
+        }
+        return file + ": successfully implements " + commandType.toString() + " output file is: " +
+                StringUtils.substringAfterLast(command, " ") + "\n";
+    }
+
     private boolean executeFile(String path, String command, CommandType commandType){
 
         if(commandType == CommandType.COMPILE_OBJECT_COMMAND){
             String fileName = Paths.get(path).getFileName().toString();
-            command = constructCommand(command, fileName);
+            command = constructCommand(command, fileName, commandType);
             addCommandHistory(CommandType.COMPILE_OBJECT_COMMAND);
             return executeCommand(command, fileName, commandType);
         }
 
         String fileName = Paths.get(path).getFileName().toString();
-        command = constructCommand(command, fileName);
+        command = constructCommand(command, fileName, commandType);
         addCommandHistory(commandType);
         return executeCommand(command, fileName, commandType);
 
 
     }
 
-    private String constructCommand(String command, String fileName){
+    private String constructCommand(String command, String fileName, CommandType commandType){
 
         Path sourceFilePath;
         Path destFilePath;
 
         if(path.isEmpty()){
             sourceFilePath = Paths.get(fileName);
-            destFilePath = Paths.get(FilenameUtils.removeExtension(fileName));
+            destFilePath = getDestinationPath(fileName, commandType, null);
         }else{
             sourceFilePath = Paths.get(path);
-            destFilePath = Paths.get(sourceFilePath.getParent().toString(), FilenameUtils.removeExtension(fileName));
-
+            destFilePath = getDestinationPath(fileName, commandType, sourceFilePath.getParent().toString());
         }
 
         command += sourceFilePath + " -o " + destFilePath;
 
         return command;
+    }
+
+    private Path getDestinationPath(String fileName, CommandType commandType, String path) {
+        Path destFilePath;
+        if(commandType == CommandType.COMPILE_OBJECT_COMMAND) {
+            destFilePath = Optional.ofNullable(path)
+                    .map(p -> Paths.get(p, FilenameUtils.removeExtension(fileName) + ".o"))
+                    .orElse(Paths.get(FilenameUtils.removeExtension(fileName) + ".o"));
+        }else {
+            destFilePath = Optional.ofNullable(path)
+                    .map(p -> Paths.get(p, FilenameUtils.removeExtension(fileName)))
+                    .orElse(Paths.get(FilenameUtils.removeExtension(fileName)));
+        }
+        return destFilePath;
     }
 
     /**

@@ -2,10 +2,7 @@ package smartgcc.view.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
-import smartgcc.model.CommandType;
 
 public class ToolBoxPanelController {
     private Stage dialogueStage;
