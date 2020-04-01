@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ToggleGroup?>
@@ -8,23 +10,41 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<?import javafx.scene.control.Button?>
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="smartgcc.view.controller.UserSwitchDialogueController">
+<AnchorPane prefHeight="156.0" prefWidth="337.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="smartgcc.view.controller.UserSwitchDialogueController">
 
-    <GridPane alignment="center" hgap="10" layoutX="15" layoutY="23" prefHeight="200" prefWidth="320" vgap="10">
+    <GridPane alignment="center" hgap="10" layoutY="14.0" prefHeight="142.0" prefWidth="478.0" vgap="10">
 
-        <Text text="How would you describe your proficiency level?" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0" />
+        <Text text="How would you describe your proficiency level ?" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0">
+         <font>
+            <Font size="13.0" />
+         </font></Text>
 
-        <RadioButton mnemonicParsing="false" selected="true" text="novice" GridPane.columnIndex="1" GridPane.rowIndex="1">
+        <RadioButton mnemonicParsing="false" selected="true" text="Novice" GridPane.columnIndex="1" GridPane.rowIndex="1">
             <toggleGroup>
                 <ToggleGroup fx:id="toggleGroup" />
             </toggleGroup>
+         <font>
+            <Font size="13.0" />
+         </font>
         </RadioButton>
 
-        <RadioButton mnemonicParsing="false" text="typical" toggleGroup="$toggleGroup" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-        <RadioButton mnemonicParsing="false" text="expert" toggleGroup="$toggleGroup" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+        <RadioButton mnemonicParsing="false" text="Typical" toggleGroup="$toggleGroup" GridPane.columnIndex="1" GridPane.rowIndex="2">
+         <font>
+            <Font size="13.0" />
+         </font></RadioButton>
+        <RadioButton mnemonicParsing="false" text="Expert" toggleGroup="$toggleGroup" GridPane.columnIndex="1" GridPane.rowIndex="3">
+         <font>
+            <Font size="13.0" />
+         </font></RadioButton>
+   
+      <ImageView fx:id="userTypeTip" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
+         <image>
+            <Image url="@../assets/exclamation.png" />
+         </image>
+      </ImageView>
 
             <!--<Text text="Remember Setting?" fx:id="rememberUserText" wrappingWidth="123.529296875" GridPane.columnIndex="1" GridPane.rowIndex="6">-->
                 <!--<GridPane.margin>-->
@@ -37,6 +57,17 @@
          <ColumnConstraints />
          <ColumnConstraints />
          <ColumnConstraints />
+         <ColumnConstraints />
+         <ColumnConstraints />
+         <ColumnConstraints />
+         <ColumnConstraints />
+         <ColumnConstraints />
+         <ColumnConstraints />
+         <ColumnConstraints />
+         <ColumnConstraints />
+         <ColumnConstraints />
+         <ColumnConstraints maxWidth="0.0" minWidth="0.0" prefWidth="0.0" />
+         <ColumnConstraints maxWidth="0.0" minWidth="0.0" prefWidth="0.0" />
       </columnConstraints>
       <rowConstraints>
          <RowConstraints />
@@ -49,18 +80,12 @@
       </rowConstraints>
     </GridPane>
 
-    <ButtonBar layoutX="176.0" layoutY="233.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0">
+    <ButtonBar layoutX="176.0" layoutY="233.0" prefHeight="25.0" prefWidth="245.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0">
         <buttons>
             <Button mnemonicParsing="false" onAction="#handleCancel" prefWidth="120.0" styleClass="button-raised" text="Cancel" />
             <Button defaultButton="true" mnemonicParsing="false" onAction="#handleOK" styleClass="button-raised" text="OK" />
         </buttons>
     </ButtonBar>
-
-   <ImageView fx:id="userTypeTip" fitHeight="25.0" fitWidth="25.0" layoutX="323.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
-      <image>
-         <Image url="@../assets/question3.png" />
-      </image>
-   </ImageView>
 
 
 

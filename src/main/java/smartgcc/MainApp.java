@@ -6,6 +6,8 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+
 import org.apache.commons.io.FileUtils;
 import smartgcc.model.Layout;
 import smartgcc.model.UserType;
@@ -98,9 +100,10 @@ public class MainApp extends Application {
             AnchorPane page = loader.load();
 
             Stage dialogStage = new Stage();
-            dialogStage.setTitle("User Type");
+            dialogStage.setTitle("Preferences");
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.initOwner(primaryStage);
+            dialogStage.initStyle(StageStyle.UTILITY);
             Scene scene = new Scene(page);
             dialogStage.setScene(scene);
 
