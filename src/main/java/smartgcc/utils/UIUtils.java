@@ -8,6 +8,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import smartgcc.MainApp;
 import smartgcc.model.Layout;
@@ -76,6 +77,7 @@ public class UIUtils {
         dialogStage.setTitle("ToolBox");
         dialogStage.initModality(Modality.WINDOW_MODAL);
         dialogStage.initOwner(owner);
+        dialogStage.initStyle(StageStyle.UTILITY);
         Scene scene = new Scene(page);
         dialogStage.setScene(scene);
 
