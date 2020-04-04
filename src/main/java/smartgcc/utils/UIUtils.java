@@ -19,6 +19,7 @@ import smartgcc.view.controller.UserSwitchDialogueController;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.nio.file.Paths;
 
 public class UIUtils {
     public static Tooltip withDelay(Tooltip tooltip, int delayInMills) {
@@ -54,6 +55,7 @@ public class UIUtils {
         dialogStage.setTitle("User Type");
         dialogStage.initModality(Modality.WINDOW_MODAL);
         dialogStage.initOwner(owner);
+        dialogStage.initStyle(StageStyle.UTILITY);
         Scene scene = new Scene(page);
         dialogStage.setScene(scene);
 
@@ -102,7 +104,8 @@ public class UIUtils {
         dialogStage.initOwner(owner);
         Scene scene = new Scene(page);
         dialogStage.setScene(scene);
-
+        dialogStage.sizeToScene();
+        
         HelpPanelController controller = loader.getController();
         controller.setController(editorPanelController);
         controller.setDialogueStage(dialogStage);

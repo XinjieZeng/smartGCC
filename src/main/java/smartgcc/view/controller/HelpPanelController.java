@@ -21,9 +21,9 @@ public class HelpPanelController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-    	WebEngine webengine = viewweb.getEngine();
-    	
-    	webengine.load(getClass().getResource("/help/index.html").toString());
+    	WebEngine webengine = viewweb.getEngine(); 	
+    	String p = getClass().getResource("/help/index.html").toExternalForm();
+    	webengine.load(p);
     }
     
     public void setDialogueStage(Stage dialogueStage){

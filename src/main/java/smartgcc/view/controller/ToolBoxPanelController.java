@@ -42,24 +42,24 @@ public class ToolBoxPanelController {
 
     @FXML
     private void initialize(){ 
-    	Tooltip optimize_1_tip = new Tooltip("Moderate optimization; optimizes reasonably well but does not degrade compilation time significantly.");
-    	Tooltip optimize_2_tip = new Tooltip("Full optimization; generates highly optimized code and has the slowest compilation time.");
-    	Tooltip optimize_3_tip = new Tooltip("Full optimization as in -O2, and also attempts automatic inlining of small subprograms within a unit.");
+    	Tooltip optimize_1_tip = new Tooltip("Moderate optimization. \n Optimizes reasonably well but does not degrade \n compilation time significantly.");
+    	Tooltip optimize_2_tip = new Tooltip("Full optimization. \n Generates highly optimized code and \n has the slowest compilation time.");
+    	Tooltip optimize_3_tip = new Tooltip("Full optimization as in -O2. \n Attempts automatic inlining of small subprograms \n within a unit.");
     	
-    	Tooltip developer_fsave_optimization_record_tip = new Tooltip("Write a SRCFILE.opt-record.json.gz file detailing what optimizations were performed, for those optimizations that support -fopt-info.");
-    	Tooltip developer_save_temps_tip = new Tooltip("Store the usual “temporary” intermediate files permanently; place them in the current directory and name them based on the source file.");
+    	Tooltip developer_fsave_optimization_record_tip = new Tooltip("Write a SRCFILE.opt-record.json.gz file detailing \n what optimizations were performed.");
+    	Tooltip developer_save_temps_tip = new Tooltip("Store the usual “temporary” intermediate files permanently.");
     	
     	Tooltip compile_executable_tip = new Tooltip("Compile to an executable file.");
     	Tooltip compile_object_tip = new Tooltip("Compile to an object file.");
     	
-    	Tooltip link_shared_tip = new Tooltip("Produce a shared object which can then be linked with other objects to form an executable.");
-    	Tooltip link_dynamic_tip = new Tooltip("Pass the flag -export-dynamic to the ELF linker, on targets that support it. \n This instructs the linker to add all symbols, not only used ones, to the dynamic symbol table. \n This option is needed for some uses of dlopen or to allow obtaining backtraces from within a program.");
+    	Tooltip link_shared_tip = new Tooltip("Produce a shared object which can then be linked \n with other objects to form an executable.");
+    	Tooltip link_dynamic_tip = new Tooltip("Pass the flag -export-dynamic to the ELF linker, \n on targets that support it.");
     	
-    	Tooltip debug_g_tip = new Tooltip("Produce debugging information in the operating system’s native format (stabs, COFF, XCOFF, or DWARF). \n GDB can work with this debugging information.");
-    	Tooltip debug_gdbb_tip = new Tooltip("Produce debugging information for use by GDB. \n This means to use the most expressive format available (DWARF, stabs, or the native format if neither of those are supported), \n including GDB extensions if at all possible.");
+    	Tooltip debug_g_tip = new Tooltip("Produce debugging information in the OS’s native format.");
+    	Tooltip debug_gdbb_tip = new Tooltip("Produce debugging information for use by GDB.");
     	
-    	Tooltip gen_ftrapv_tip = new Tooltip("This option generates traps for signed overflow on addition, subtraction, multiplication operations.");
-    	Tooltip gen_fwrapv_tip = new Tooltip("This option instructs the compiler to assume that signed arithmetic overflow of \n addition, subtraction and multiplication wraps around using twos-complement representation.");
+    	Tooltip gen_ftrapv_tip = new Tooltip("This option generates traps for signed overflow on \n addition, subtraction, multiplication operations.");
+    	Tooltip gen_fwrapv_tip = new Tooltip("This option instructs the compiler to assume \n that signed arithmetic overflow of \n addition, subtraction and multiplication wraps around \n using twos-complement representation.");
     	
     	compile_executable.setTooltip(compile_executable_tip);
     	compile_object.setTooltip(compile_object_tip);
