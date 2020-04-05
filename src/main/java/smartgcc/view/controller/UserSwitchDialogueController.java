@@ -31,12 +31,14 @@ public class UserSwitchDialogueController {
 
     @FXML
     private void initialize(){
-        String tips = "Novice: new to the GCC compiler \n" +
-                "Typical: limited knowledge of gcc compiler\n" +
-                "Expert: advanced knowledge of gcc compiler";
-
-        Tooltip.install(userTypeTip, UIUtils.withDelay(new Tooltip(tips),100));
-
+        StringBuilder message = new StringBuilder();
+        message.append("A Novice user is a user with no or limited amount of programming experience.");
+        message.append("\n");
+        message.append("A Typical user is a user with some programming skills.");
+        message.append("\n");
+        message.append("A Expert user is a user with several years of programming experience.");
+        message.append("\n");
+        Tooltip.install(userTypeTip, UIUtils.withDelay(new Tooltip(message.toString()),100));
     }
 
     private void rememberUserChoice(){

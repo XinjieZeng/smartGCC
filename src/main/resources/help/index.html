@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Help</title>
+  
+  <style type="text/css">
+  body {
+    	font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
+	    font-size: 14px;
+	    line-height: 1.5;
+	    color: #24292e;
+	    background-color: #fff;
+	}
+  </style>
+</head>
+
+<body>
+<div id="container" style="padding: 10px 40px 40px 40px; text-align: justify;">
+
+	<h2 class="subsection">SmartGCC Help Manual</h2>
+	
+	<p>
+	The SmartGCC Help manual provides a concise single page help documentation to assist users in using the editor.
+	</p>
+	
+	<h3 class="subsection">1. Concepts</h3>
+	<p>
+		<img alt="" src="../assets/exclamation.png" style="width:20px;height:20px;margin-right:10px;">An exclamation mark refers to a warning or caution sign where the user has to pay attention to the
+		information conversed from the system.
+	</p>
+	<p>
+		<img alt="" src="../assets/help2.png" style="width:20px;height:20px;margin-right:10px;">A help icon is a reference link to the manual of the SmartGCC Application.
+	</p>
+	<p>
+		<img alt="" src="../assets/ts-tool-box.png" style="width:20px;height:20px;margin-right:10px;">A toolbox icon refers to the All Options that any user can select. Once the user selects 
+		the required options, SmartGCC should execute the program using the selected options by calling GCC through an appropriate command line and display the results.
+	</p>
+	
+	<p>
+		<img alt="" src="../assets/user.png" style="width:20px;height:20px;margin-right:10px;">A user type icon refers to the different level of users for the application. It allows a user to change
+		a particular user type from one level to another.
+	</p>
+	
+	<p>
+		<img alt="" src="../assets/stop.png" style="width:20px;height:20px;margin-right:10px;">A stop button is used to terminate a running process.
+	</p>
+	
+	<p>
+		<img alt="" src="../assets/run3.png" style="width:20px;height:20px;margin-right:10px;">A run button is used to execute the program on the editor. 
+	</p>
+	
+	<p>
+		<img alt="" src="../assets/terminal-box-fill.png" style="width:20px;height:20px;margin-right:10px;">A terminal output window is a console window used to display the execution
+		output of a program. It is also used to display a change of state of the user level in the user type window settings. 
+	</p>
+	
+	<h3 class="subsection">2. Workbench Menu</h3>
+	<p>
+		The menu allows you to perform actions on projects.
+	</p>
+	<br/>
+	<div>
+		<div><b>File > Open</b></div>
+		<div>This command allows to select an external file and load it into the editor console.</div>
+	</div>
+	<br/>
+	<div>
+		<div><b>File > Save As</b></div>
+		<div>This command allows to save the code into the editor window to an external file.</div>
+	</div>
+	<br/>
+	<div>
+		<div><b>File > Exit</b></div>
+		<div>This command allows to terminate, exit and close the application.</div>
+	</div>
+	<br/>
+	<div>
+		<div><b>Command </b></div>
+		<div>It allows to run the code in the editor by selecting one of the options in the Command sub-menu. More information about each command is found below.</div>
+	</div>
+	<br/>
+	<div>
+		<div><b>History </b></div>
+		<div>It provides the history of previously running commands.</div>
+	</div>
+	<br/>
+	
+	<h3 class="subsection">3. Proficiency Level</h3>
+	<p>
+		The proficiency level represents a type of user for the SmartGCC application. The application is designed for three different types of users.
+		<ul>
+			<li>A novice user: A first time user who does not have a lot of programming experience. Has a tendency to make a lot of programming mistakes and errors while coding. A novice
+			user has access to use compiler options, linking options, execute options and debugging options.<br/></li>
+			<li>Typical user: An intermediate programmer who has programming experience and who likes to structure code and use frameworks for code generation. A typical user has access to 
+			code generation and code optimization options in addition to the options used by novice users.<br/></li>
+			<li>Expert developer: A programmer who has extensive knowledge about programming and who focuses on finishing on time. Has a lot of tricks and tips to work better and faster.
+			A expert developer has access to the developer options in addition to the options used by typical programmers.<br/></li>
+		</ul>
+	</p>
+
+	<h3 class="subsection">4. Options</h3>
+
+	<h4 class="subsection">4.1 Linking Options</h4>
+	
+	<dt><samp><span class="option">-shared</span></samp></dt>
+	<dd>Produce a shared object which can then be linked with other objects to form an executable. Not all systems support this option. For predictable results, you must also specify the same set of options used for compilation (-fpic, -fPIC, or model suboptions) when you specify this linker option.<br></dd>
+	<dt><samp><span class="option">-rdynamic</span></samp></dt>     
+	<dd>Pass the flag -export-dynamic to the ELF linker, on targets that support it. This instructs the linker to add all symbols, not only used ones, to the dynamic symbol table. This option is needed for some uses of dlopen or to allow obtaining backtraces from within a program.<br></dd>
+	</p>More references about linking options can be found at <i>https://gcc.gnu.org/onlinedocs/gcc/Link-Options.html</i><p>
+
+	<h4 class="subsection">4.2 Debugging Options</h4>
+	
+	<dt><samp><span class="option">-g</span></samp></dt>
+	<dd>
+	<p>Produce debugging information in the operating system’s native format (stabs, COFF, XCOFF, or DWARF).  GDB can work with this debugging information.</p>
+	<p>On most systems that use stabs format, <samp>-g</samp> enables use of extra debugging information that only GDB can use; this extra information makes debugging 
+	work better in GDB but probably makes other debuggers crash or refuse to read the program.  If you want to control for certain whether to generate the extra information, 
+	use <samp>-gstabs+</samp>, <samp>-gstabs</samp>, <samp>-gxcoff+</samp>, <samp>-gxcoff</samp>, or <samp>-gvms</samp>.</p>
+	</dd>
+	<dt><samp><span class="option">-gdbb</span></samp></dt>
+	<dd><a name="index-ggdb"></a>
+	<p>Produce debugging information for use by GDB.  This means to use the most expressive format available (DWARF, stabs, or the native format if neither of those are supported), 
+	including GDB extensions if at all possible.</p>
+	</dd>
+	
+	</p>More references about debugging options can be found at <i>https://gcc.gnu.org/onlinedocs/gcc/Debugging-Options.html</i><p>
+	
+	
+	<h4 class="subsection">4.3 Code Gen Options</h4>
+	
+	<dt><samp><span class="option">-ftrapv</span></samp></dt>
+	<dd>
+	<p>This option generates traps for signed overflow on addition, subtraction, multiplication operations.The options <samp>-ftrapv</samp> and <samp>-fwrapv</samp> 
+	override each other, so using <samp>-ftrapv</samp> <samp>-fwrapv</samp> on the command-line results in <samp>-fwrapv</samp> being effective.  
+	Note that only active options override, so using <samp>-ftrapv</samp> <samp>-fwrapv</samp> <samp>-fno-wrapv</samp> on the command-line results in <samp>-ftrapv</samp> 
+	being effective.</p></dd>
+	
+	<dt><samp><span class="option">-fwrapv</span></samp></dt>
+	<dd><a name="index-fwrapv"></a>
+	<p>This option instructs the compiler to assume that signed arithmetic overflow of addition, subtraction and multiplication wraps around using twos-complement representation.  
+	This flag enables some optimizations and disables others. The options <samp>-ftrapv</samp> and <samp>-fwrapv</samp> override each other, so using <samp>-ftrapv</samp> 
+	<samp>-fwrapv</samp> on the command-line results in<samp>-fwrapv</samp> being effective.  Note that only active options override, so using <samp>-ftrapv</samp> 
+	<samp>-fwrapv</samp> <samp>-fno-wrapv</samp> on the command-line results in <samp>-ftrapv</samp> being effective.</p>
+	</dd>
+	
+	</p>More references about code gen options can be found at <i>https://gcc.gnu.org/onlinedocs/gcc/Code-Gen-Options.html</i><p>
+	
+	
+	<h4 class="subsection">4.4 Optimization Levels</h4>
+	
+	<p>The default is optimization off. This results in the fastest compile times, but GNAT makes absolutely no attempt to optimize, and the generated programs are considerably 
+	larger and slower than when optimization is enabled. You can use the <code>-O1</code>, <code>-O2</code>, <code>-O3</code> to <code>gcc</code> to control the optimization level:</p>
+	
+	<dl compact="compact">
+		<dt><code>-O1</code></dt>
+		<dd><p>Moderate optimization;optimizes reasonably well but does not degrade compilation time significantly.</p></dd>
+	</dl>
+	
+	<dl compact="compact">
+		<dt><code>-O2</code></dt>
+		<dd><p>Full optimization;generates highly optimized code and has the slowest compilation time.</p></dd>
+	</dl>
+	
+	<dl compact="compact">
+		<dt><code>-O3</code></dt>
+		<dd><p>Full optimization as in <code>-O2</code>;also uses more aggressive automatic inlining of subprograms within a unit and attempts to vectorize loops.</p></dd>
+	</dl>
+	
+	</p>More references about optimization level can be found at <i>https://gcc.gnu.org/onlinedocs/gnat_ugn/Optimization-Levels.html</i><p>
+	
+	</body>
+	
+	
+	<h4 class="subsection">4.5 Developer Options</h4>
+	
+	<p>This section describes command-line options that are primarily of interest to GCC developers, including options to support compiler testing and investigation of 
+	compiler bugs and compile-time performance problems.  This includes options that produce debug dumps at various points in the compilation; that print statistics 
+	such as memory use and execution time; and that print information about GCC's configuration, such as where it searches for libraries.  You should rarely need to use 
+	any of these options for ordinary compilation and linking tasks.</p>
+	     
+	<dt><code>-save-temps</code></dt>
+	
+	<dd>Store the usual “temporary” intermediate files permanently; place them in the current directory and name them based on the source file. Thus, compiling <samp>
+	<span class="file">foo.c</span></samp> with <samp><span class="option">-c -save-temps</span></samp> produces files<samp><span class="file">foo.i</span></samp> and 
+	<samp><span class="file">foo.s</span></samp>, as well as <samp><span class="file">foo.o</span></samp>.  This creates a preprocessed <samp><span class="file">foo.i</span>
+	</samp> output file even though the compiler now normally uses an integrated preprocessor.<br></dd>
+	
+	<dt><code>-fsave-optimization-record</code></dt>
+	<dd>
+	<p>Write a SRCFILE.opt-record.json.gz file detailing what optimizations were performed, for those optimizations that support <samp>-fopt-info</samp>.</p>
+	</dd>
+	
+	
+	</p>More references about the developer options can be found at <i>https://gcc.gnu.org/onlinedocs/gcc-6.2.0/gcc/Developer-Options.html</i><p>
+	
+</div>
+
+</html>

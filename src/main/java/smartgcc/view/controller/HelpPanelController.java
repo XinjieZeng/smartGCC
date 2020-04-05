@@ -1,14 +1,31 @@
 package smartgcc.view.controller;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import smartgcc.MainApp;
 
-public class HelpPanelController {
+public class HelpPanelController implements Initializable {
 
     private MainApp mainApp;
     private Stage dialogueStage;
     private EditorPanelController controller;
 
+    @FXML
+    private WebView viewweb;
+    
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+    	WebEngine webengine = viewweb.getEngine(); 	
+    	String p = getClass().getResource("/help/index.html").toExternalForm();
+    	webengine.load(p);
+    }
+    
     public void setDialogueStage(Stage dialogueStage){
         this.dialogueStage = dialogueStage;
     }
