@@ -19,8 +19,8 @@ The gcc compiler has a lot of commands, which would be impossible to implement a
    
 ### **Building the project** 
 1. Import the project as maven project
-2. Go to MainApp to run the SmartGCC
-3. try the functionalities provided by the smartGCC 
+2. Run mvn install
+3. Run mvn exec:java -Dexec.mainClass=smartgcc.MainApp
 
 ### **Note**:
 1. When running the smartGCC first time, the swtich user type panel will show up for users to choose their user type. The user type will be saved in userChoice.txt and the editing panel will be adjusted accordingly based on chosen user type.
