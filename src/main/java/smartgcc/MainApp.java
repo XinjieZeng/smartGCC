@@ -43,9 +43,12 @@ public class MainApp extends Application {
             return;
         }
         switchUserDialogue();
-
         userType = readUserSelection();
-        initRootLayout(userType);
+
+        if(userType != UNKNOWN){
+            initRootLayout(userType);
+        }
+
     }
 
     private UserType readUserSelection() {
